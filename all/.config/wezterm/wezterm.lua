@@ -123,6 +123,7 @@ end)
 local scheme = wezterm.color.get_builtin_schemes()['Dark Pastel'] -- pick any
 scheme.ansi[5] = '#8be9fc'
 scheme.brights[5] = '#8be9fc'
+-- scheme.visual_bell = '#ff550f'
 
 
 return {
@@ -171,7 +172,9 @@ return {
         fade_in_duration_ms = 50,
         fade_out_function = 'Linear',
         fade_out_duration_ms = 50,
+        target = "CursorColor",
     },
+    -- color = "#ff550f",
 
     leader = { key = 'Q', mods = 'OPT', timeout_milliseconds = 2000 },
     keys = {
