@@ -24,6 +24,7 @@ export HISTFILE=~/.zsh_history
 setopt EXTENDED_HISTORY
 export LC_TIME=C
 export MANPAGER='nvim +Man!'
+export PAGER='nvim'
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 

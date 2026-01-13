@@ -34,22 +34,21 @@ vim.pack.add({
     -- {src = "numToStr/Comment.nvim"},
 })
 
+
 require("plugins.iron")
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'eslint', 'ts_ls' }, })
+
 require('blink.cmp').setup({
     keymap = {
-        preset = "none",
+        preset = "default",
         ["<Tab>"] = { "select_next", "fallback" },
         ["<S-Tab>"] = { "select_prev", "fallback" },
         ["<CR>"] = { "accept", "fallback" },
-        ["<C-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<C-e>"] = { "hide", "fallback" },
-        ["<C-b>"] = { "scroll_documentation_up", "fallback" },
-        ["<C-f>"] = { "scroll_documentation_down", "fallback" },
     },
     sources = {
-        default = { "lsp", "path", "buffer" },
+        default = { "lsp", "path", "buffer", "dadbod" },
+        providers = { dadbod = { name = "dadbod", module = "vim_dadbod_completion.blink", min_keyword_length = 2, score_offset = 85, }, },
     },
     signature = { enabled = true },
     fuzzy = { implementation = "prefer_rust" },
@@ -74,53 +73,53 @@ require 'treesitter-context'.setup { -- working only sometimes? RV 01/11/2026
 }
 
 require('gitsigns').setup {
-  signs = {
-    add          = { text = '┃' },
-    change       = { text = '┃' },
-    delete       = { text = '_' },
-    topdelete    = { text = '‾' },
-    changedelete = { text = '~' },
-    untracked    = { text = '┆' },
-  },
-  signs_staged = {
-    add          = { text = '┃' },
-    change       = { text = '┃' },
-    delete       = { text = '_' },
-    topdelete    = { text = '‾' },
-    changedelete = { text = '~' },
-    untracked    = { text = '┆' },
-  },
-  signs_staged_enable = true,
-  signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-  numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-  linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-  word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-  watch_gitdir = {
-    follow_files = true
-  },
-  auto_attach = true,
-  attach_to_untracked = false,
-  current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-  current_line_blame_opts = {
-    virt_text = true,
-    virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-    delay = 1000,
-    ignore_whitespace = false,
-    virt_text_priority = 100,
-    use_focus = true,
-  },
-  current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
-  sign_priority = 6,
-  update_debounce = 100,
-  status_formatter = nil, -- Use default
-  max_file_length = 40000, -- Disable if file is longer than this (in lines)
-  preview_config = {
-    -- Options passed to nvim_open_win
-    style = 'minimal',
-    relative = 'cursor',
-    row = 0,
-    col = 1
-  },
+    signs                        = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+    },
+    signs_staged                 = {
+        add          = { text = '┃' },
+        change       = { text = '┃' },
+        delete       = { text = '_' },
+        topdelete    = { text = '‾' },
+        changedelete = { text = '~' },
+        untracked    = { text = '┆' },
+    },
+    signs_staged_enable          = true,
+    signcolumn                   = true,  -- Toggle with `:Gitsigns toggle_signs`
+    numhl                        = false, -- Toggle with `:Gitsigns toggle_numhl`
+    linehl                       = false, -- Toggle with `:Gitsigns toggle_linehl`
+    word_diff                    = false, -- Toggle with `:Gitsigns toggle_word_diff`
+    watch_gitdir                 = {
+        follow_files = true
+    },
+    auto_attach                  = true,
+    attach_to_untracked          = false,
+    current_line_blame           = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
+    current_line_blame_opts      = {
+        virt_text = true,
+        virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+        delay = 1000,
+        ignore_whitespace = false,
+        virt_text_priority = 100,
+        use_focus = true,
+    },
+    current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+    sign_priority                = 6,
+    update_debounce              = 100,
+    status_formatter             = nil,   -- Use default
+    max_file_length              = 40000, -- Disable if file is longer than this (in lines)
+    preview_config               = {
+        -- Options passed to nvim_open_win
+        style = 'minimal',
+        relative = 'cursor',
+        row = 0,
+        col = 1
+    },
 }
 
 require("oil").setup(
@@ -128,7 +127,6 @@ require("oil").setup(
         columns = {
             "icon",
             "mtime",
-
         },
         view_options = {
             show_hidden = true,
@@ -160,7 +158,7 @@ map({ 'n', 'v' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags
 
 map({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 map({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
-map({ 'n', 'v', 'x' }, '<leader>p', '"+0p<CR>')
+map({ 'n', 'v', 'x' }, '<leader>p', '"+p<CR>')
 map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>')
 
 
@@ -212,6 +210,11 @@ vim.keymap.set("i", "<c-l>", function()
 end, { expr = true })
 
 
+
+vim.diagnostic.config({
+    virtual_text = true,
+    -- virtual_lines = true,
+})
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
