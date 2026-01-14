@@ -201,8 +201,6 @@ vim.keymap.set({ 'n', 'v' }, '<leader>Q', ':quit!<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>E', ':x<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>lf', vim.lsp.buf.format)
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
-vim.keymap.set({ "n", "v", "x" }, ";", ":")
-vim.keymap.set({ "n", "v", "x" }, ":", ";")
 
 -- TODO: move to snippets RV 01/02/2026
 vim.keymap.set("i", "<c-l>", function()

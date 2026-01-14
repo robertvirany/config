@@ -676,6 +676,45 @@
                                     }
                                 ],
                                 "type": "basic"
+                            },
+                            {
+                                "title": "swap ; and :",
+                                "rules": [
+                                    {
+                                        "manipulators": [
+                                            {
+                                                "type": "basic",
+                                                "from": {
+                                                    "key_code": "semicolon"
+                                                },
+                                                "to": [
+                                                    {
+                                                        "key_code": "semicolon",
+                                                        "modifiers": [
+                                                            "left_shift"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "type": "basic",
+                                                "from": {
+                                                    "key_code": "semicolon",
+                                                    "modifiers": {
+                                                        "mandatory": [
+                                                            "left_shift"
+                                                        ]
+                                                    }
+                                                },
+                                                "to": [
+                                                    {
+                                                        "key_code": "semicolon"
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
                             }
                         ]
                     }
