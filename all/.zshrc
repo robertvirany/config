@@ -46,10 +46,13 @@ autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
 
-# if command -v tailscale >/dev/null; then
-#   source <(tailscale completion zsh)
-# fi
-#
+source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
+source $(brew --prefix)/opt/fzf/shell/completion.zsh
+
+if command -v tailscale >/dev/null; then
+  source <(tailscale completion zsh)
+fi
+
 # if command -v wezterm >/dev/null; then
 #     wezterm shell-completion --shell zsh | source /dev/stdin
 # fi
@@ -140,6 +143,9 @@ bindkey -M viins '^[OB' history-beginning-search-forward-end
 # To fix fringe vi mode backspace behavior on macos
 bindkey -M viins '^?' backward-delete-char
 bindkey -M viins '^H' backward-delete-char
+
+
+bindkey '^F' fzf-file-widget
 
 
 

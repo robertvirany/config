@@ -64,6 +64,10 @@
       "rev": "3f8109cd21abe9fdb274a09da1e3c176673254b4",
       "src": "https://github.com/nvim-telescope/telescope.nvim"
     },
+    "undotree": {
+      "rev": "3976ed63d7fb0cc47f6a778e230a390a399df69c",
+      "src": "https://github.com/jiaoshijie/undotree"
+    },
     "vim-dadbod": {
       "rev": "e95afed23712f969f83b4857a24cf9d59114c2e6",
       "src": "https://github.com/tpope/vim-dadbod"

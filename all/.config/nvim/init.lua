@@ -30,6 +30,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
     { src = "https://github.com/tpope/vim-fugitive" },
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
+    { src = "https://github.com/jiaoshijie/undotree" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
 })
@@ -38,6 +39,31 @@ vim.pack.add({
 require("plugins.iron")
 require("mason").setup()
 require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'eslint', 'ts_ls' }, })
+require("undotree").setup({
+    float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
+    layout = "left_bottom", -- "left_bottom", "left_left_bottom"
+    position = "left",      -- "right", "bottom"
+    ignore_filetype = {
+        'undotree',
+        'undotreeDiff',
+        'qf',
+    },
+    window = {
+        winblend = 30,
+        border = "rounded", -- The string values are the same as those described in 'winborder'.
+    },
+    keymaps = {
+        j = "move_next",
+        k = "move_prev",
+        gj = "move2parent",
+        J = "move_change_next",
+        K = "move_change_prev",
+        ['<cr>'] = "action_enter",
+        p = "enter_diffbuf",
+        q = "quit",
+    },
+})
+
 
 require('blink.cmp').setup({
     keymap = {
@@ -151,10 +177,6 @@ map({ 'n', 'v' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 map({ 'n', 'v' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 -- map({ 'n', 'v' }, '<leader>fm, search mail')
 
-map({ 'n', 'v' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-map({ 'n', 'v' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-map({ 'n', 'v' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
-map({ 'n', 'v' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 map({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 map({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
@@ -165,6 +187,13 @@ map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>')
 map('x', 'y', 'y`>')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
+
+map('n', 'gl', '$')
+map('n', 'gh', '0')
+map('n', 'gj', '<C-d>')
+map('n', 'gk', '<C-u>')
+map('n', '<C-j>', 'gj')
+map('n', '<C-k>', 'gk')
 
 
 vim.lsp.enable({ 'lua_ls' })

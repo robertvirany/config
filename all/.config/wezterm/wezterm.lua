@@ -179,12 +179,12 @@ return {
     leader = { key = 'Q', mods = 'OPT', timeout_milliseconds = 2000 },
     keys = {
         {
-            key = "D",
+            key = "A",
             mods = "OPT|SHIFT",
             action = wezterm.action.SplitHorizontal({}),
         },
         {
-            key = "A",
+            key = "D",
             mods = "OPT|SHIFT",
             action = wezterm.action.SplitVertical({}),
         },
@@ -197,6 +197,11 @@ return {
             key = "W",
             mods = "CTRL|SHIFT",
             action = wezterm.action.CloseCurrentPane({ confirm = false }),
+        },
+        {
+            key = "T",
+            mods = "OPT|SHIFT",
+            action = wezterm.action.SpawnTab 'CurrentPaneDomain',
         },
         {
             key = "Y",
