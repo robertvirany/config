@@ -166,6 +166,7 @@ return {
     -- window_background_opacity = 1.0,
     -- window_decorations = "RESIZE",
 
+    window_close_confirmation = 'NeverPrompt',
     audible_bell = "Disabled",
     visual_bell = {
         fade_in_function = 'Linear',
@@ -180,6 +181,11 @@ return {
     keys = {
         {
             key = "A",
+            mods = "OPT|SHIFT",
+            action = wezterm.action.SplitHorizontal({}),
+        },
+        {
+            key = "E",
             mods = "OPT|SHIFT",
             action = wezterm.action.SplitHorizontal({}),
         },

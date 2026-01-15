@@ -46,8 +46,8 @@ autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
 
-source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
-source $(brew --prefix)/opt/fzf/shell/completion.zsh
+source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh # Must split by macos/linux
+source $(brew --prefix)/opt/fzf/shell/completion.zsh # Must split by macos/linux
 
 if command -v tailscale >/dev/null; then
   source <(tailscale completion zsh)

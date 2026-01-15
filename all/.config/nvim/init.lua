@@ -38,7 +38,7 @@ vim.pack.add({
 
 require("plugins.iron")
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'eslint', 'ts_ls' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls' }, })
 require("undotree").setup({
     float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
     layout = "left_bottom", -- "left_bottom", "left_left_bottom"
@@ -189,7 +189,7 @@ map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 
 map('n', 'gl', '$')
-map('n', 'gh', '0')
+map('n', 'gh', '^')
 map('n', 'gj', '<C-d>')
 map('n', 'gk', '<C-u>')
 map('n', '<C-j>', 'gj')
@@ -229,6 +229,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>q', ':quit<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>Q', ':quit!<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>E', ':x<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>lf', vim.lsp.buf.format)
+vim.keymap.set({'n', 'v'}, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
 
 -- TODO: move to snippets RV 01/02/2026
