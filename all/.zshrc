@@ -141,6 +141,11 @@ bindkey '^[[B' history-beginning-search-forward-end
 bindkey -M viins '^[OA' history-beginning-search-backward-end
 bindkey -M viins '^[OB' history-beginning-search-forward-end
 
+bindkey -M vicmd 'k' history-beginning-search-backward-end
+bindkey -M vicmd 'j' history-beginning-search-forward-end
+bindkey -M vicmd '^[[A' history-beginning-search-backward-end
+bindkey -M vicmd '^[[B' history-beginning-search-forward-end
+
 # To fix fringe vi mode backspace behavior on macos
 bindkey -M viins '^?' backward-delete-char
 bindkey -M viins '^H' backward-delete-char

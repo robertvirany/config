@@ -1,7 +1,9 @@
 cmd - 1 : open -a 'wezterm'
 cmd - 2 : open -a 'firefox'
 cmd - f : open -a 'firefox'
+cmd + shift - f : open -na 'firefox'
 cmd - i : open -a 'wezterm'
+cmd + shift - i : open -na 'wezterm'
 
 #alt - 4 : open -a 'obsidian'
 
@@ -13,8 +15,25 @@ ctrl + alt - left : yabai -m window --focus west
 ctrl + alt - right : yabai -m window --focus east
 ctrl + alt - down : yabai -m window --focus south
 ctrl + alt - up : yabai -m window --focus north
-#alt - tab : yabai -m window --focus recent
 
-alt - return : yabai -m window --toggle zoom-fullscreen
+shift + alt - h : yabai -m window --swap west || yabai -m window --swap east
+shift + alt - l : yabai -m window --swap east || yabai -m window --swap west
+shift + alt - j : yabai -m window --swap south || yabai -m window --swap north
+shift + alt - k : yabai -m window --swap north || yabai -m window --swap south
+shift + alt - left : yabai -m window --swap west || yabai -m window --swap east
+shift + alt - right : yabai -m window --swap east || yabai -m window --swap west
+shift + alt - down : yabai -m window --swap south || yabai -m window --swap north
+shift + alt - up : yabai -m window --swap north || yabai -m window --swap south
+alt - tab : yabai -m window --focus recent
+alt - escape : yabai -m window --focus next || yabai -m window --focus first # Upgrade this to go across spaces
 
-cmd - tab : yabai -m space --focus next
+alt - f : yabai -m window --toggle zoom-fullscreen
+
+# have to set these up so that it creates a new space if needed and deletes current space if last window
+cmd + shift - l : yabai -m window --space next 
+cmd + shift - h : yabai -m window --space prev 
+
+cmd - tab : yabai -m space --focus next || yabai -m space --focus first
+cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
+
+alt - p : yabai -m window --focus west || yabai -m window --focus first # wake up focus

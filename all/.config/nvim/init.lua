@@ -182,19 +182,20 @@ map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags
 map({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
 map({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
 map({ 'n', 'v', 'x' }, '<leader>p', '"+p<CR>')
-map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>')
+map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>', { remap = true })
+map({ 'n', 'v', 'x' }, '<c-w>e', ':wq<CR>')
 
 
 map('x', 'y', 'y`>')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 
-map({'n','x'}, 'gl', '$')
-map({'n','x'}, 'gh', '^')
-map({'n','x'}, 'gj', '<C-d>')
-map({'n','x'}, 'gk', '<C-u>')
-map({'n','x'}, '<C-j>', 'gj')
-map({'n','x'}, '<C-k>', 'gk')
+map({ 'n', 'x' }, 'gl', '$')
+map({ 'n', 'x' }, 'gh', '^')
+map({ 'n', 'x' }, 'gj', '<C-d>')
+map({ 'n', 'x' }, 'gk', '<C-u>')
+map({ 'n', 'x' }, '<C-j>', 'gj')
+map({ 'n', 'x' }, '<C-k>', 'gk')
 
 
 vim.lsp.enable({ 'lua_ls' })
