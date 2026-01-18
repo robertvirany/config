@@ -39,6 +39,7 @@ vim.pack.add({
 require("plugins.iron")
 require("mason").setup()
 require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls' }, })
+
 require("undotree").setup({
     float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
     layout = "left_bottom", -- "left_bottom", "left_left_bottom"
@@ -170,11 +171,11 @@ require("nvim-treesitter").install({ "lua", "rust", "python" })
 -- require("nvim-treesitter-textobjects.configs")
 
 local map = vim.keymap.set
-map({ 'n', 'v' }, '<leader>o', ':Oil<CR>')
-map({ 'n', 'v' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-map({ 'n', 'v' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-map({ 'n', 'v' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
-map({ 'n', 'v' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+map({ 'n', 'x' }, '<leader>o', ':Oil<CR>')
+map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
+map({ 'n', 'x' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
+map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 -- map({ 'n', 'v' }, '<leader>fm, search mail')
 
 
@@ -188,12 +189,12 @@ map('x', 'y', 'y`>')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 
-map('n', 'gl', '$')
-map('n', 'gh', '^')
-map('n', 'gj', '<C-d>')
-map('n', 'gk', '<C-u>')
-map('n', '<C-j>', 'gj')
-map('n', '<C-k>', 'gk')
+map({'n','x'}, 'gl', '$')
+map({'n','x'}, 'gh', '^')
+map({'n','x'}, 'gj', '<C-d>')
+map({'n','x'}, 'gk', '<C-u>')
+map({'n','x'}, '<C-j>', 'gj')
+map({'n','x'}, '<C-k>', 'gk')
 
 
 vim.lsp.enable({ 'lua_ls' })
@@ -229,7 +230,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>q', ':quit<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>Q', ':quit!<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>E', ':x<CR>')
 vim.keymap.set({ 'n', 'v' }, '<leader>lf', vim.lsp.buf.format)
-vim.keymap.set({'n', 'v'}, '<Tab>', '2W')
+-- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
 
 -- TODO: move to snippets RV 01/02/2026
@@ -237,6 +238,8 @@ vim.keymap.set("i", "<c-l>", function()
     return os.date("%m/%d/%Y")
 end, { expr = true })
 
+vim.keymap.set({ 'n', 'v' }, '<leader>rb,', ':DBUIToggle<CR>')
+vim.keymap.set({ 'n', 'v' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
 
 
 vim.diagnostic.config({

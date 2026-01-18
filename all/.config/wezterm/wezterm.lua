@@ -166,6 +166,7 @@ return {
     -- window_background_opacity = 1.0,
     -- window_decorations = "RESIZE",
 
+    -- debug_key_events = true,
     window_close_confirmation = 'NeverPrompt',
     audible_bell = "Disabled",
     visual_bell = {
@@ -177,8 +178,18 @@ return {
     },
     -- color = "#ff550f",
 
-    leader = { key = 'Q', mods = 'OPT', timeout_milliseconds = 2000 },
+    leader = {
+        key = 'Tab',
+        mods = 'NONE',
+        -- mods = 'SUPER',
+        timeout_milliseconds = 750
+    },
     keys = {
+        -- { -- attempting to emit tab after double tap tab in insert mode (and wherever) 01/17/2026
+        --     key = "Tab",
+        --     mods = "LEADER",
+        --     action = "Tab",
+        -- },
         {
             key = "A",
             mods = "OPT|SHIFT",
@@ -263,9 +274,49 @@ return {
             mods = "LEADER",
             action = wezterm.action.ActivatePaneDirection 'Up',
         },
+        -- {
+        --     key = "h",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Left',
+        -- },
+        -- {
+        --     key = "l",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Right',
+        -- },
+        -- {
+        --     key = "j",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Down',
+        -- },
+        -- {
+        --     key = "k",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Up',
+        -- },
+        -- {
+        --     key = "LeftArrow",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Left',
+        -- },
+        -- {
+        --     key = "RightArrow",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Right',
+        -- },
+        -- {
+        --     key = "DownArrow",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Down',
+        -- },
+        -- {
+        --     key = "UpArrow",
+        --     mods = "LEADER|CTRL",
+        --     action = wezterm.action.ActivatePaneDirection 'Up',
+        -- },
         {
             key = "H",
-            mods = "OPT|SHIFT",
+            tods = "OPT|SHIFT",
             action = wezterm.action.AdjustPaneSize { 'Left', 5 },
         },
         {
