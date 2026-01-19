@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "YankRing.vim": {
+      "rev": "28854abef8fa4ebd3cb219aefcf22566997d8f65",
+      "src": "https://github.com/vim-scripts/YankRing.vim"
+    },
     "blink.cmp": {
       "rev": "10c164bbdf065f9781b6cc2f7d068c016276055b",
       "src": "https://github.com/saghen/blink.cmp"

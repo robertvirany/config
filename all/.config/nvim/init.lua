@@ -31,6 +31,7 @@ vim.pack.add({
     { src = "https://github.com/tpope/vim-fugitive" },
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
     { src = "https://github.com/jiaoshijie/undotree" },
+    { src = "https://github.com/vim-scripts/YankRing.vim" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
 })
@@ -196,6 +197,8 @@ map({ 'n', 'x' }, 'gj', '<C-d>')
 map({ 'n', 'x' }, 'gk', '<C-u>')
 map({ 'n', 'x' }, '<C-j>', 'gj')
 map({ 'n', 'x' }, '<C-k>', 'gk')
+map({ 'n', 'x' }, '<C-h>', '<C-6>')
+map({ 'n', 'x' }, 'Y', 'y$')
 
 
 vim.lsp.enable({ 'lua_ls' })

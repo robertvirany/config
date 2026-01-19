@@ -1,5 +1,16 @@
-cmd - 1 : open -a 'wezterm'
-cmd - 2 : open -a 'firefox'
+#cmd - 1 : open -a 'wezterm'
+#cmd - 2 : open -a 'firefox'
+
+cmd - 1 : yabai -m space --focus 1
+cmd - 2 : yabai -m space --focus 2
+cmd - 3 : yabai -m space --focus 3
+cmd - 4 : yabai -m space --focus 4
+cmd - 5 : yabai -m space --focus 5
+cmd - 6 : yabai -m space --focus 6
+cmd - 7 : yabai -m space --focus 7
+cmd - 8 : yabai -m space --focus 8
+cmd - 9 : yabai -m space --focus 9
+
 cmd - f : open -a 'firefox'
 cmd + shift - f : open -na 'firefox'
 cmd - i : open -a 'wezterm'
@@ -7,27 +18,31 @@ cmd + shift - i : open -na 'wezterm'
 
 #alt - 4 : open -a 'obsidian'
 
-ctrl + alt - h : yabai -m window --focus west
-ctrl + alt - l : yabai -m window --focus east
-ctrl + alt - j : yabai -m window --focus south
-ctrl + alt - k : yabai -m window --focus north
-ctrl + alt - left : yabai -m window --focus west
-ctrl + alt - right : yabai -m window --focus east
-ctrl + alt - down : yabai -m window --focus south
-ctrl + alt - up : yabai -m window --focus north
+ctrl + alt - h : yabai -m window --focus west || yabai -m window --focus east
+ctrl + alt - l : yabai -m window --focus east || yabai -m window --focus west
+ctrl + alt - j : yabai -m window --focus south || yabai -m window --focus north
+ctrl + alt - k : yabai -m window --focus north || yabai -m window --focus south
+ctrl + alt - left : yabai -m window --focus west || yabai -m window --focus east
+ctrl + alt - right : yabai -m window --focus east || yabai -m window --focus west
+ctrl + alt - down : yabai -m window --focus south || yabai -m window --focus north
+ctrl + alt - up : yabai -m window --focus north || yabai -m window --focus south
 
-shift + alt - h : yabai -m window --swap west || yabai -m window --swap east
-shift + alt - l : yabai -m window --swap east || yabai -m window --swap west
-shift + alt - j : yabai -m window --swap south || yabai -m window --swap north
-shift + alt - k : yabai -m window --swap north || yabai -m window --swap south
-shift + alt - left : yabai -m window --swap west || yabai -m window --swap east
-shift + alt - right : yabai -m window --swap east || yabai -m window --swap west
-shift + alt - down : yabai -m window --swap south || yabai -m window --swap north
-shift + alt - up : yabai -m window --swap north || yabai -m window --swap south
-alt - tab : yabai -m window --focus recent
-alt - escape : yabai -m window --focus next || yabai -m window --focus first # Upgrade this to go across spaces
+
+lcmd - h : yabai -m window --swap west || yabai -m window --swap east
+lcmd - l : yabai -m window --swap east || yabai -m window --swap west
+lcmd - j : yabai -m window --swap south || yabai -m window --swap north
+lcmd - k : yabai -m window --swap north || yabai -m window --swap south
+lcmd - left : yabai -m window --swap west || yabai -m window --swap east
+lcmd - right : yabai -m window --swap east || yabai -m window --swap west
+lcmd - down : yabai -m window --swap south || yabai -m window --swap north
+lcmd - up : yabai -m window --swap north || yabai -m window --swap south
+alt - tab : yabai -m window --focus recent || yabai -m window --focus next || yabai -m window --focus first
+alt - escape : yabai -m window --focus next || yabai -m window --focus first 
+alt + shift - escape : yabai -m window --focus previous || yabai -m window --focus last
 
 alt - f : yabai -m window --toggle zoom-fullscreen
+
+# something to pull the window in the next space into bsp with my current space 01/18/2026
 
 # have to set these up so that it creates a new space if needed and deletes current space if last window
 cmd + shift - l : yabai -m window --space next 
@@ -36,4 +51,4 @@ cmd + shift - h : yabai -m window --space prev
 cmd - tab : yabai -m space --focus next || yabai -m space --focus first
 cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
 
-alt - p : yabai -m window --focus west || yabai -m window --focus first # wake up focus
+# alt - p : yabai -m window --focus west || yabai -m window --focus first # wake up focus
