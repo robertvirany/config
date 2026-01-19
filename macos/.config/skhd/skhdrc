@@ -36,6 +36,10 @@ lcmd - left : yabai -m window --swap west || yabai -m window --swap east
 lcmd - right : yabai -m window --swap east || yabai -m window --swap west
 lcmd - down : yabai -m window --swap south || yabai -m window --swap north
 lcmd - up : yabai -m window --swap north || yabai -m window --swap south
+
+rcmd - h : yabai -m window --stack next || yabai -m window --stack first # experimenting with rcmd 01/19/2026
+
+
 alt - tab : yabai -m window --focus recent || yabai -m window --focus next || yabai -m window --focus first
 alt - escape : yabai -m window --focus next || yabai -m window --focus first 
 alt + shift - escape : yabai -m window --focus previous || yabai -m window --focus last

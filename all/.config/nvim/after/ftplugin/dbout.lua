@@ -1,6 +1,2 @@
-vim.keymap.set("n", "e", "f|")
-vim.keymap.set("n", "E", "f|")
-vim.keymap.set("n", "w", "f|")
-vim.keymap.set("n", "W", "f|")
-vim.keymap.set("n", "b", "F|")
-vim.keymap.set("n", "B", "F|")
+vim.keymap.set("n", "f", "f|")
+vim.keymap.set("n", "t", "F|")

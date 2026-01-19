@@ -10,7 +10,6 @@ local wezterm = require 'wezterm'
 --         { Text = date .. '   ' },
 --     })
 -- end)
-
 -- default_cursor_style = "SteadyBlock"
 -- enable_focus_reporting = false
 -- use_ime = false
@@ -20,7 +19,6 @@ local wezterm = require 'wezterm'
 wezterm.on('update-right-status', function(window, pane)
     -- Each element holds the text for a cell in a "powerline" style << fade
     local cells = {}
-
     -- Figure out the cwd and host of the current pane.
     -- This will pick up the hostname for the remote host if your
     -- shell is using OSC 7 on the remote host.
@@ -28,11 +26,9 @@ wezterm.on('update-right-status', function(window, pane)
     if cwd_uri then
         local cwd = ''
         -- local hostname = ''
-
         if type(cwd_uri) == 'userdata' then
             -- Running on a newer version of wezterm and we have
             -- a URL object here, making this simple!
-
             cwd = cwd_uri.file_path
             -- hostname = cwd_uri.host or wezterm.hostname()
         else
@@ -48,7 +44,6 @@ wezterm.on('update-right-status', function(window, pane)
                 end)
             end
         end
-
         -- -- Remove the domain name portion of the hostname
         -- local dot = hostname:find '[.]'
         -- if dot then
@@ -61,21 +56,17 @@ wezterm.on('update-right-status', function(window, pane)
         table.insert(cells, cwd)
         -- table.insert(cells, hostname)
     end
-
     -- I like my date/time in this style: "Wed Mar 3 08:14"
     local date = wezterm.strftime '%a %b %-d %H:%M'
     table.insert(cells, date)
-
     -- An entry for each battery (typically 0 or 1 battery)
     for _, b in ipairs(wezterm.battery_info()) do
         table.insert(cells, string.format('%.0f%%', b.state_of_charge * 100))
     end
-
     -- The powerline < symbol
     local LEFT_ARROW = utf8.char(0xe0b3)
     -- The filled in variant of the < symbol
     local SOLID_LEFT_ARROW = utf8.char(0xe0b2)
-
     -- Color palette for the backgrounds of each cell
     local colors = {
         '#3c1361',
@@ -87,12 +78,10 @@ wezterm.on('update-right-status', function(window, pane)
 
     -- Foreground color for the text across the fade
     local text_fg = '#c0c0c0'
-
     -- The elements to be formatted
     local elements = {}
     -- How many cells have been formatted
     local num_cells = 0
-
     -- Translate a cell into elements
     function push(text, is_last)
         local cell_no = num_cells + 1
@@ -105,21 +94,17 @@ wezterm.on('update-right-status', function(window, pane)
         end
         num_cells = num_cells + 1
     end
-
     while #cells > 0 do
         local cell = table.remove(cells, 1)
         push(cell, #cells == 0)
     end
-
     window:set_right_status(wezterm.format(elements))
 end)
-
 -- Status line attempt for Zsh Vi mode
 -- wezterm.on("update-status", function(window, pane)
 --   local mode = pane:get_user_vars().ZLE_MODE or ""
 --   window:set_right_status(mode)
 -- end)
-
 local scheme = wezterm.color.get_builtin_schemes()['Dark Pastel'] -- pick any
 scheme.ansi[5] = '#8be9fc'
 scheme.brights[5] = '#8be9fc'
@@ -128,12 +113,10 @@ scheme.brights[5] = '#8be9fc'
 
 return {
     scrollback_lines = 200000,
-
     color_schemes = {
         ['dark-pastel-blue-fixed'] = scheme,
     },
     color_scheme = 'dark-pastel-blue-fixed',
-
     -- color_scheme = "Dark Pastel",
     -- colors = {
     --     --     background = "#000000",
@@ -165,7 +148,6 @@ return {
     -- font_size = 16.0,
     -- window_background_opacity = 1.0,
     -- window_decorations = "RESIZE",
-
     -- debug_key_events = true,
     window_close_confirmation = 'NeverPrompt',
     audible_bell = "Disabled",
@@ -316,7 +298,7 @@ return {
         -- },
         {
             key = "H",
-            tods = "OPT|SHIFT",
+            mods = "OPT|SHIFT",
             action = wezterm.action.AdjustPaneSize { 'Left', 5 },
         },
         {
@@ -356,7 +338,6 @@ return {
         },
 
     },
-
     mouse_bindings = {
         -- disable default click-to-open
         {
@@ -364,7 +345,6 @@ return {
             mods = "NONE",
             action = wezterm.action.Nop,
         },
-
         -- require ctrl+click to open links
         {
             event = { Up = { streak = 1, button = "Left" } },

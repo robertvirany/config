@@ -99,6 +99,7 @@ alias t='type'
 alias m='neomutt'
 alias karabiner='n ~/.config/karabiner'
 alias skhdrc='n ~/.config/skhd/skhdrc'
+alias wt='wezterm'
 
 
 alias dps='docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Status}}\t{{.Command}}"'
