@@ -36,10 +36,67 @@ vim.pack.add({
     -- {src = "numToStr/Comment.nvim"},
 })
 
+local iron = require("iron.core")
+local view = require("iron.view")
+local common = require("iron.fts.common")
 
-require("plugins.iron")
+iron.setup {
+    config = {
+        scratch_repl = true,
+        repl_definitions = {
+            sh = {
+                command = { "zsh" }
+            },
+            python = {
+                command = { "ipython" },
+                format = common.bracketed_paste_python,
+                block_dividers = { "# %%", "#%%" },
+                env = { PYTHON_BASIC_REPL = "1" },
+            },
+            javascript = {
+                command = { "node" },
+                block_dividers = { "// %%", "//%%" },
+            }
+        },
+        repl_filetype = function(bufnr, ft)
+            return ft
+        end,
+        dap_integration = true,
+        repl_open_cmd = view.split.vertical.rightbelow("%40"),
+    },
+    keymaps = {
+        toggle_repl = "<space>rr",
+        restart_repl = "<space>rR",
+        send_motion = "<space>sc",
+        visual_send = "<space>sc",
+        send_file = "<space>sf",
+        send_line = "<space>sl",
+        send_paragraph = "<space>sp",
+        send_until_cursor = "<space>su",
+        send_mark = "<space>sm",
+        send_code_block = "<space>sb",
+        send_code_block_and_move = "<space>sn",
+        mark_motion = "<space>mc",
+        mark_visual = "<space>mc",
+        remove_mark = "<space>md",
+        cr = "<space>s<cr>",
+        interrupt = "<space>s<space>",
+        exit = "<space>sq",
+        clear = "<space>cl",
+    },
+    highlight = {
+        italic = true
+    },
+    ignore_blank_lines = true,
+}
+
+vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
+vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
+
+
+
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yaml-language-server' }, })
 
 require("undotree").setup({
     float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
@@ -172,7 +229,11 @@ require("nvim-treesitter").install({ "lua", "rust", "python" })
 -- require("nvim-treesitter-textobjects.configs")
 
 local map = vim.keymap.set
-map({ 'n', 'x' }, '<leader>o', ':Oil<CR>')
+
+map({ 't' }, '<Esc>', [[<C-\><C-n>]], { noremap = true })
+
+map({ 'n', 'x' }, '<leader>o<CR>', ':Oil<CR>')
+
 map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 map({ 'n', 'x' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
@@ -181,8 +242,9 @@ map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags
 
 
 map({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
-map({ 'n', 'v', 'x' }, '<leader>d', '"+d<CR>')
+map({ 'n', 'v', 'x' }, '<leader>d', '"_d<CR>')
 map({ 'n', 'v', 'x' }, '<leader>p', '"+p<CR>')
+map({ 'n', 'v', 'x' }, [[\p]], '"0p<CR>')
 map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>', { remap = true })
 map({ 'n', 'v', 'x' }, '<c-w>e', ':wq<CR>')
 
@@ -191,14 +253,15 @@ map('x', 'y', 'y`>')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 
-map({ 'n', 'x' }, 'gl', '$')
-map({ 'n', 'x' }, 'gh', '^')
-map({ 'n', 'x' }, 'gj', '<C-d>')
-map({ 'n', 'x' }, 'gk', '<C-u>')
-map({ 'n', 'x' }, '<C-j>', 'gj')
-map({ 'n', 'x' }, '<C-k>', 'gk')
-map({ 'n', 'x' }, '<C-h>', '<C-6>')
-map({ 'n', 'x' }, 'Y', 'y$')
+map({ 'n', 'x', 'o' }, 'gl', '$')
+map({ 'n', 'x', 'o' }, 'gh', '^')
+map({ 'n', 'x', 'o' }, 'gj', '<C-d>')
+map({ 'n', 'x', 'o' }, 'gk', '<C-u>')
+map({ 'n', 'x', 'o' }, '<C-j>', '2<C-W>-')
+map({ 'n', 'x', 'o' }, '<C-k>', '2<C-W>+')
+map({ 'n', 'x', 'o' }, '<C-h>', '8<C-W><')
+map({ 'n', 'x', 'o' }, '<C-l>', '8<C-W>>')
+map({ 'n', 'x', 'o' }, 'Y', 'y$')
 
 
 vim.lsp.enable({ 'lua_ls' })
@@ -229,11 +292,13 @@ vim.o.undofile = true
 -- nnoremap <tab> >>
 -- nnoremap <S-tab> <<
 
-vim.keymap.set({ 'n', 'v' }, '<leader>e', ':write<CR>')
-vim.keymap.set({ 'n', 'v' }, '<leader>q', ':quit<CR>')
-vim.keymap.set({ 'n', 'v' }, '<leader>Q', ':quit!<CR>')
-vim.keymap.set({ 'n', 'v' }, '<leader>E', ':x<CR>')
-vim.keymap.set({ 'n', 'v' }, '<leader>lf', vim.lsp.buf.format)
+vim.keymap.set({ 'n', 'x' }, '<leader>e', ':w<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':qa<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>E', ':x<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>a', 'ggVG')
+vim.keymap.set({ 'n', 'x' }, '<leader><CR>', '<C-^>')
+vim.keymap.set({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
 -- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
 
@@ -242,8 +307,10 @@ vim.keymap.set("i", "<c-l>", function()
     return os.date("%m/%d/%Y")
 end, { expr = true })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>rb,', ':DBUIToggle<CR>')
-vim.keymap.set({ 'n', 'v' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>rb,', ':DBUIToggle<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>rs,', '<leader>W')
+
 
 
 vim.diagnostic.config({

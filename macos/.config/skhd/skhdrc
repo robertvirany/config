@@ -18,6 +18,11 @@ cmd + shift - i : open -na 'wezterm'
 
 #alt - 4 : open -a 'obsidian'
 
+# Cycle Space Focus
+cmd - tab : yabai -m space --focus next || yabai -m space --focus first
+cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
+
+# Direct Window Focus
 ctrl + alt - h : yabai -m window --focus west || yabai -m window --focus east
 ctrl + alt - l : yabai -m window --focus east || yabai -m window --focus west
 ctrl + alt - j : yabai -m window --focus south || yabai -m window --focus north
@@ -27,32 +32,32 @@ ctrl + alt - right : yabai -m window --focus east || yabai -m window --focus wes
 ctrl + alt - down : yabai -m window --focus south || yabai -m window --focus north
 ctrl + alt - up : yabai -m window --focus north || yabai -m window --focus south
 
-
-lcmd - h : yabai -m window --swap west || yabai -m window --swap east
-lcmd - l : yabai -m window --swap east || yabai -m window --swap west
-lcmd - j : yabai -m window --swap south || yabai -m window --swap north
-lcmd - k : yabai -m window --swap north || yabai -m window --swap south
-lcmd - left : yabai -m window --swap west || yabai -m window --swap east
-lcmd - right : yabai -m window --swap east || yabai -m window --swap west
-lcmd - down : yabai -m window --swap south || yabai -m window --swap north
-lcmd - up : yabai -m window --swap north || yabai -m window --swap south
-
-rcmd - h : yabai -m window --stack next || yabai -m window --stack first # experimenting with rcmd 01/19/2026
+# # Window Swap
+# cmd + alt - h : yabai -m window --swap west || yabai -m window --swap east
+# cmd + alt - l : yabai -m window --swap east || yabai -m window --swap west
+# cmd + alt - j : yabai -m window --swap south || yabai -m window --swap north
+# cmd + alt - k : yabai -m window --swap north || yabai -m window --swap south
+# cmd + alt - left : yabai -m window --swap west || yabai -m window --swap east
+# cmd + alt - right : yabai -m window --swap east || yabai -m window --swap west
+# cmd + alt - down : yabai -m window --swap south || yabai -m window --swap north
+# cmd + alt - up : yabai -m window --swap north || yabai -m window --swap south
 
 
+# rcmd - h : yabai -m window --stack next || yabai -m window --stack first # experimenting with rcmd 01/19/2026
+
+
+# Cycle Window Focus
 alt - tab : yabai -m window --focus recent || yabai -m window --focus next || yabai -m window --focus first
+cmd - r : yabai -m window --focus recent || yabai -m window --focus next || yabai -m window --focus first
 alt - escape : yabai -m window --focus next || yabai -m window --focus first 
 alt + shift - escape : yabai -m window --focus previous || yabai -m window --focus last
 
 alt - f : yabai -m window --toggle zoom-fullscreen
 
-# something to pull the window in the next space into bsp with my current space 01/18/2026
-
 # have to set these up so that it creates a new space if needed and deletes current space if last window
+# Send Window to Space
 cmd + shift - l : yabai -m window --space next 
 cmd + shift - h : yabai -m window --space prev 
 
-cmd - tab : yabai -m space --focus next || yabai -m space --focus first
-cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
+# something to pull the window in the next space into bsp with my current space 01/18/2026
 
-# alt - p : yabai -m window --focus west || yabai -m window --focus first # wake up focus

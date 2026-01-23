@@ -1,2 +1,2 @@
-vim.keymap.set("n", "f", "f|")
-vim.keymap.set("n", "t", "F|")
+vim.keymap.set({ "n","x" }, "f", "f|")
+vim.keymap.set({ "n","x" }, "F", "F|")

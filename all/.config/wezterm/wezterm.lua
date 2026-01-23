@@ -1,4 +1,5 @@
 local wezterm = require 'wezterm'
+local act = wezterm.action
 
 -- wezterm.on('update-right-status', function(window, pane)
 --     local date = wezterm.strftime '%Y-%m-%d %H:%M'
@@ -175,7 +176,7 @@ return {
         {
             key = "A",
             mods = "OPT|SHIFT",
-            action = wezterm.action.SplitHorizontal({}),
+            action = act.SplitHorizontal({}),
         },
         {
             key = "E",
@@ -185,6 +186,16 @@ return {
         {
             key = "D",
             mods = "OPT|SHIFT",
+            action = wezterm.action.SplitVertical({}),
+        },
+        {
+            key = "e",
+            mods = "SUPER",
+            action = wezterm.action.SplitHorizontal({}),
+        },
+        {
+            key = "d",
+            mods = "SUPER",
             action = wezterm.action.SplitVertical({}),
         },
         {
@@ -237,6 +248,26 @@ return {
             action = wezterm.action.ActivatePaneDirection 'Up',
         },
         {
+            key = "h",
+            mods = "SUPER",
+            action = wezterm.action.ActivatePaneDirection 'Left',
+        },
+        {
+            key = "l",
+            mods = "SUPER",
+            action = wezterm.action.ActivatePaneDirection 'Right',
+        },
+        {
+            key = "j",
+            mods = "SUPER",
+            action = wezterm.action.ActivatePaneDirection 'Down',
+        },
+        {
+            key = "k",
+            mods = "SUPER",
+            action = wezterm.action.ActivatePaneDirection 'Up',
+        },
+        {
             key = "LeftArrow",
             mods = "LEADER",
             action = wezterm.action.ActivatePaneDirection 'Left',
@@ -255,6 +286,66 @@ return {
             key = "UpArrow",
             mods = "LEADER",
             action = wezterm.action.ActivatePaneDirection 'Up',
+        },
+        {
+            key = "p",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = "n",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = "p",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = "n",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = ",",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = ".",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = ",",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = ".",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = "w",
+            mods = "LEADER",
+            action = wezterm.action.CloseCurrentPane({ confirm = false }),
+        },
+        {
+            key = "w",
+            mods = "SUPER",
+            action = wezterm.action.CloseCurrentPane({ confirm = false }),
+        },
+        {
+            key = "t",
+            mods = "LEADER",
+            action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+        },
+        {
+            key = ":",
+            mods = "LEADER",
+            action = wezterm.action.ActivateCopyMode,
         },
         -- {
         --     key = "h",
