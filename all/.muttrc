@@ -6,7 +6,7 @@ set editor="nvim"
 # set pager="nvim"
 # set spoolfile="."
 set folder="~/mail"
-set record="=[Gmail]/Sent Mail"
+# set record="=[Gmail]/Sent Mail"
 set postponed="+[Gmail]/Drafts"
 set trash="+Trash"
 set sendmail="/opt/homebrew/bin/msmtp"
@@ -16,6 +16,10 @@ mailboxes =INBOX ="[Gmail]/Sent Mail" ="[Gmail]/Drafts"
 auto_view text/html
 alternative_order text/plain text/html
 set mailcap_path="~/.config/neomutt/mailcap"
+
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
 # bind editor <space>q quit_editor
 

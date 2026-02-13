@@ -96,7 +96,7 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yaml-language-server' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman' }, })
 
 require("undotree").setup({
     float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
@@ -224,7 +224,7 @@ require("gp").setup({ providers = { ollama = { disable = false, endpoint = "http
 
 local builtin = require('telescope.builtin')
 
-require("nvim-treesitter").install({ "lua", "rust", "python" })
+require("nvim-treesitter").install({ "lua", "rust", "python", "cc" })
 --require("nvim-treesitter.configs").setup()
 -- require("nvim-treesitter-textobjects.configs")
 
@@ -232,7 +232,7 @@ local map = vim.keymap.set
 
 map({ 't' }, '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
-map({ 'n', 'x' }, '<leader>o<CR>', ':Oil<CR>')
+map({ 'n', 'x' }, '<leader>o<CR>', ':sp .<CR>')
 
 map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
@@ -241,12 +241,12 @@ map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags
 -- map({ 'n', 'v' }, '<leader>fm, search mail')
 
 
-map({ 'n', 'v', 'x' }, '<leader>y', '"+y<CR>')
-map({ 'n', 'v', 'x' }, '<leader>d', '"_d<CR>')
-map({ 'n', 'v', 'x' }, '<leader>p', '"+p<CR>')
-map({ 'n', 'v', 'x' }, [[\p]], '"0p<CR>')
-map({ 'n', 'v', 'x' }, '<leader>w', '<c-w>', { remap = true })
-map({ 'n', 'v', 'x' }, '<c-w>e', ':wq<CR>')
+map({ 'n', 'x' }, '<leader>y', '"+y<CR>')
+map({ 'n', 'x' }, '<leader>d', '"+d<CR>')
+map({ 'n', 'x' }, '<leader>p', '"+p<CR>')
+map({ 'n', 'x' }, [[\p]], '"0p<CR>')
+map({ 'n', 'x' }, '<leader>w', '<c-w>', { remap = true })
+map({ 'n', 'x' }, '<c-w>e', ':wq<CR>')
 
 
 map('x', 'y', 'y`>')
@@ -254,7 +254,7 @@ map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
 
 map({ 'n', 'x', 'o' }, 'gl', '$')
-map({ 'n', 'x', 'o' }, 'gh', '^')
+map({ 'n', 'x', 'o' }, 'gh', '0')
 map({ 'n', 'x', 'o' }, 'gj', '<C-d>')
 map({ 'n', 'x', 'o' }, 'gk', '<C-u>')
 map({ 'n', 'x', 'o' }, '<C-j>', '2<C-W>-')
@@ -285,6 +285,8 @@ vim.o.swapfile = false
 vim.o.winborder = "rounded"
 vim.o.signcolumn = "yes"
 vim.o.undofile = true
+vim.o.splitright = true
+vim.o.splitbelow = true
 
 
 -- keymaps
@@ -336,4 +338,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
         vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
         vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
     end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "help",
+    callback = function() vim.cmd("wincmd K") end,
 })

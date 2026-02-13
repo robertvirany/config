@@ -95,6 +95,7 @@ wezterm.on('update-right-status', function(window, pane)
         end
         num_cells = num_cells + 1
     end
+
     while #cells > 0 do
         local cell = table.remove(cells, 1)
         push(cell, #cells == 0)
@@ -161,6 +162,7 @@ return {
     },
     -- color = "#ff550f",
 
+    -- disable_default_key_bindings = true, -- one day
     leader = {
         key = 'Tab',
         mods = 'NONE',
@@ -173,6 +175,11 @@ return {
         --     mods = "LEADER",
         --     action = "Tab",
         -- },
+        {
+            key = 'Space',
+            mods = 'LEADER',
+            action = act.SendKey { key = 'Tab', mods = 'NONE' },
+        },
         {
             key = "A",
             mods = "OPT|SHIFT",
@@ -225,6 +232,34 @@ return {
             mods = "CTRL|SHIFT",
             action = wezterm.action_callback(function(win, pane)
                 pane:move_to_new_window()
+            end)
+        },
+        {
+            key = "m",
+            mods = "LEADER",
+            action = wezterm.action_callback(function(win, pane)
+                pane:move_to_new_window()
+            end)
+        },
+        {
+            key = "m",
+            mods = "SUPER",
+            action = wezterm.action_callback(function(win, pane)
+                pane:move_to_new_window()
+            end)
+        },
+        {
+            key = "y",
+            mods = "LEADER",
+            action = wezterm.action_callback(function(win, pane)
+                pane:move_to_new_tab()
+            end)
+        },
+        {
+            key = "y",
+            mods = "SUPER",
+            action = wezterm.action_callback(function(win, pane)
+                pane:move_to_new_tab()
             end)
         },
         {
@@ -287,26 +322,26 @@ return {
             mods = "LEADER",
             action = wezterm.action.ActivatePaneDirection 'Up',
         },
-        {
-            key = "p",
-            mods = "LEADER",
-            action = wezterm.action.ActivateTabRelative(-1),
-        },
-        {
-            key = "n",
-            mods = "LEADER",
-            action = wezterm.action.ActivateTabRelative(1),
-        },
-        {
-            key = "p",
-            mods = "SUPER",
-            action = wezterm.action.ActivateTabRelative(-1),
-        },
-        {
-            key = "n",
-            mods = "SUPER",
-            action = wezterm.action.ActivateTabRelative(1),
-        },
+        -- {
+        --     key = "p",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(-1),
+        -- },
+        -- {
+        --     key = "n",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(1),
+        -- },
+        -- {
+        --     key = "p",
+        --     mods = "SUPER",
+        --     action = wezterm.action.ActivateTabRelative(-1),
+        -- },
+        -- {
+        --     key = "n",
+        --     mods = "SUPER",
+        --     action = wezterm.action.ActivateTabRelative(1),
+        -- },
         {
             key = ",",
             mods = "LEADER",
@@ -324,6 +359,26 @@ return {
         },
         {
             key = ".",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = "[",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = "]",
+            mods = "LEADER",
+            action = wezterm.action.ActivateTabRelative(1),
+        },
+        {
+            key = "[",
+            mods = "SUPER",
+            action = wezterm.action.ActivateTabRelative(-1),
+        },
+        {
+            key = "]",
             mods = "SUPER",
             action = wezterm.action.ActivateTabRelative(1),
         },
@@ -345,6 +400,11 @@ return {
         {
             key = ":",
             mods = "LEADER",
+            action = wezterm.action.ActivateCopyMode,
+        },
+        {
+            key = ":", -- not working
+            mods = "SUPER",
             action = wezterm.action.ActivateCopyMode,
         },
         -- {

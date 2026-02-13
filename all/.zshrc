@@ -25,6 +25,7 @@ setopt EXTENDED_HISTORY
 export LC_TIME=C
 export MANPAGER='nvim +Man!'
 export PAGER='nvim'
+export GH_PAGER=''
 
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
@@ -98,12 +99,15 @@ alias c-='c -'
 alias t='type'
 alias m='neomutt'
 alias karabiner='n ~/.config/karabiner'
+alias karab='n ~/.config/karabiner'
 alias skhdrc='n ~/.config/skhd/skhdrc'
 alias wt='wezterm'
 
 
 alias dps='docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Status}}\t{{.Command}}"'
 alias sql='sqlite3'
+alias mesh='sqlmesh'
+alias tails='tailscale'
 alias python='python3'
 alias hq='htmlq'
 
@@ -116,8 +120,10 @@ alias mail="c ~/mail"
 alias linbox="ssh linbox"
 alias fedora="ssh yung_rob@fedora"
 alias dbui="nvim +'DBUI'"
-alias inbox="mbsync -a; neomutt -f ~/mail/INBOX"
-alias drafts="mbsync -a; neomutt -f ~/mail/\[Gmail\]/Drafts"
+alias inbox="neomutt -f ~/mail/INBOX"
+alias sent="neomutt -f ~/mail/\[Gmail\]/Sent\ Mail"
+alias drafts="neomutt -f ~/mail/\[Gmail\]/Drafts"
+alias kp="keepassxc-cli"
 
 #linux only
 alias sctl='systemctl'
