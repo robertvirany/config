@@ -3,6 +3,7 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 FNM_PATH="/home/robert/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
@@ -63,10 +64,10 @@ fi
 # Aliases
 export EZA_COLORS="uu=37:da=31"
 alias ls='eza'
-alias ll='eza -alF --color=always'
+alias ll='eza -alF -snew -r --color=always'
 alias la='eza -A'
 alias l='ll'
-alias lt='eza -alF -snew -r --color=always'
+# alias lt='eza -alF -snew -r --color=always'
 alias c='cd'
 alias c.='cd ..'
 alias ce='cd'

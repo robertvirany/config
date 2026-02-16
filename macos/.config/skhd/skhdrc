@@ -66,8 +66,8 @@ alt - f : yabai -m window --toggle zoom-fullscreen
 
 # have to set these up so that it creates a new space if needed and deletes current space if last window
 # Send Window to Space
-cmd + shift - l : yabai -m window --space next 
-cmd + shift - h : yabai -m window --space prev 
+cmd + shift - l : yabai -m window --space next || yabai -m window --space first
+cmd + shift - h : yabai -m window --space prev || yabai -m window --space last
 
 # something to pull the window in the next space into bsp with my current space 01/18/2026
 
