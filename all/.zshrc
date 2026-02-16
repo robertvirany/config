@@ -1,9 +1,16 @@
+# MacOS guard
+if [[ -d /opt/homebrew ]]; then
+    export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+    source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
+    source $(brew --prefix)/opt/fzf/shell/completion.zsh
+fi
+
+
 # Path Exports 
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$HOME/Library/Python/3.9/bin:$PATH"
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 FNM_PATH="/home/robert/.local/share/fnm"
 if [ -d "$FNM_PATH" ]; then
@@ -48,8 +55,6 @@ autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
 
-source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh # Must split by macos/linux
-source $(brew --prefix)/opt/fzf/shell/completion.zsh # Must split by macos/linux
 
 if command -v tailscale >/dev/null; then
   source <(tailscale completion zsh)
