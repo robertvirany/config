@@ -3,7 +3,13 @@ if [[ -d /opt/homebrew ]]; then
     export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
     source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
     source $(brew --prefix)/opt/fzf/shell/completion.zsh
+else
+    # export PATH=""
+    source /usr/share/fzf/shell/key-bindings.zsh
+    export PATH="/usr/bin/jvm:$PATH"
 fi
+
+
 
 
 # Path Exports 
