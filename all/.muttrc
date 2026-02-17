@@ -11,6 +11,8 @@ set postponed="+[Gmail]/Drafts"
 set trash="+Trash"
 set sendmail="/opt/homebrew/bin/msmtp"
 
+set index_format="%4C %Z %{%b %d %I:%M%p} %-15.15L (%<l?%4l&%4c>) %s"
+
 mailboxes =INBOX ="[Gmail]/Sent Mail" ="[Gmail]/Drafts"
 
 auto_view text/html

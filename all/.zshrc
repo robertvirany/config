@@ -1,8 +1,9 @@
 # MacOS guard
 if [[ -d /opt/homebrew ]]; then
-    export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
     source $(brew --prefix)/opt/fzf/shell/key-bindings.zsh
     source $(brew --prefix)/opt/fzf/shell/completion.zsh
+    export PATH="/opt/homebrew/bin:$PATH"
+    export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 else
     # export PATH=""
     source /usr/share/fzf/shell/key-bindings.zsh
