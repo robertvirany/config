@@ -31,10 +31,27 @@ vim.pack.add({
     { src = "https://github.com/tpope/vim-fugitive" },
     { src = "https://github.com/lewis6991/gitsigns.nvim" },
     { src = "https://github.com/jiaoshijie/undotree" },
-    { src = "https://github.com/vim-scripts/YankRing.vim" },
+    -- { src = "https://github.com/vim-scripts/YankRing.vim" },
+    { src = "https://github.com/ojroques/nvim-osc52" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
 })
+
+
+local osc52 = require("osc52")
+
+vim.g.clipboard = {
+  name = "osc52",
+  copy = {
+    ["+"] = osc52.copy("+"),
+    ["*"] = osc52.copy("*"),
+  },
+  paste = {
+    ["+"] = osc52.paste("+"),
+    ["*"] = osc52.paste("*"),
+  },
+}
+
 
 local iron = require("iron.core")
 local view = require("iron.view")
