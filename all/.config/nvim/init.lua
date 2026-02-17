@@ -38,21 +38,21 @@ vim.pack.add({
 })
 
 
-local osc52 = require("osc52")
+-- local osc52 = require("osc52")
 
-vim.g.clipboard = {
-  name = "osc52",
-  copy = {
-    ["+"] = osc52.copy("+"),
-    ["*"] = osc52.copy("*"),
-  },
-  paste = {
-    ["+"] = osc52.paste("+"),
-    ["*"] = osc52.paste("*"),
-  },
-}
-
-
+-- vim.g.clipboard = {
+--   name = "osc52",
+--   copy = {
+--     ["+"] = osc52.copy("+"),
+--     ["*"] = osc52.copy("*"),
+--   },
+--   paste = {
+--     ["+"] = osc52.paste("+"),
+--     ["*"] = osc52.paste("*"),
+--   },
+-- }
+--
+--
 local iron = require("iron.core")
 local view = require("iron.view")
 local common = require("iron.fts.common")
