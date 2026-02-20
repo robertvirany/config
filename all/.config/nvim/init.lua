@@ -14,7 +14,7 @@ vim.pack.add({
     -- { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",        build = ":TSUpdate" },
-    --  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects"}, -- exploding on me when i open nvim RV 01/02/2026
+    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = 'main' },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/Vigemus/iron.nvim" },
@@ -53,6 +53,10 @@ vim.pack.add({
 -- }
 --
 --
+
+
+
+
 local iron = require("iron.core")
 local view = require("iron.view")
 local common = require("iron.fts.common")
@@ -113,8 +117,9 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls' }, })
 
+vim.cmd("packadd nvim.undotree")
 require("undotree").setup({
     float_diff = true,      -- using float window previews diff, set this `true` will disable layout option
     layout = "left_bottom", -- "left_bottom", "left_left_bottom"
@@ -157,6 +162,21 @@ require('blink.cmp').setup({
 })
 require("mini.surround").setup()
 require("mini.pairs").setup()
+
+-- require("nvim-treesitter").setup({
+--   highlight = { enable = true },
+-- })
+--
+--
+-- require("nvim-treesitter.configs").setup({
+--   ensure_installed = { "lua", "rust", "python", "c", "cpp" },
+--   highlight = { enable = true },
+-- })
+--
+--
+
+require 'nvim-treesitter'.setup {}
+require("nvim-treesitter").install({ "lua", "rust", "python", "cpp" })
 
 require 'treesitter-context'.setup { -- working only sometimes? RV 01/11/2026
     enable = true,                   -- Enable this plugin (Can be enabled/disabled later via commands)
@@ -241,15 +261,32 @@ require("gp").setup({ providers = { ollama = { disable = false, endpoint = "http
 
 local builtin = require('telescope.builtin')
 
-require("nvim-treesitter").install({ "lua", "rust", "python", "cc" })
---require("nvim-treesitter.configs").setup()
--- require("nvim-treesitter-textobjects.configs")
+require("nvim-treesitter-textobjects").setup {
+    select = {
+        enable = true,
+        lookahead = true,
+        keymaps = {
+            ["af"] = "@function.outer",
+            ["if"] = "@function.inner",
+            ["ac"] = "@class.outer",
+            ["ic"] = "@class.inner",
+        },
+        select_modes = {
+            ['@parameter.outer'] = 'v',
+            ['@function.outer'] = 'V',
+            ['@class.outer'] = '<c-v>',
+        },
+    },
+    include_surrounding_whitespace = false,
+}
 
 local map = vim.keymap.set
 
 map({ 't' }, '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
-map({ 'n', 'x' }, '<leader>o<CR>', ':sp .<CR>')
+map({ 'n', 'x' }, '<leader>o<CR>', ':Oil<CR>')
+map({ 'n', 'x' }, '<leader>oj', ':sp .<CR>')
+map({ 'n', 'x' }, '<leader>ol', ':vsp .<CR>')
 
 map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
@@ -272,8 +309,8 @@ map('n', 'N', 'Nzzzv')
 
 map({ 'n', 'x', 'o' }, 'gl', '$')
 map({ 'n', 'x', 'o' }, 'gh', '0')
-map({ 'n', 'x', 'o' }, 'gj', '<C-d>')
-map({ 'n', 'x', 'o' }, 'gk', '<C-u>')
+-- map({ 'n', 'x', 'o' }, 'gj', '<C-d>')
+-- map({ 'n', 'x', 'o' }, 'gk', '<C-u>')
 map({ 'n', 'x', 'o' }, '<C-j>', '2<C-W>-')
 map({ 'n', 'x', 'o' }, '<C-k>', '2<C-W>+')
 map({ 'n', 'x', 'o' }, '<C-h>', '8<C-W><')
@@ -311,6 +348,7 @@ vim.o.splitbelow = true
 -- nnoremap <tab> >>
 -- nnoremap <S-tab> <<
 
+vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
 vim.keymap.set({ 'n', 'x' }, '<leader>e', ':w<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':qa<CR>')
@@ -330,6 +368,7 @@ vim.keymap.set({ 'n', 'x' }, '<leader>rb,', ':DBUIToggle<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>rs,', '<leader>W')
 
+vim.keymap.set({ 'n', 'x'}, "<leader>'", ':mod<CR>')
 
 
 vim.diagnostic.config({

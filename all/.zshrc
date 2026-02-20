@@ -123,6 +123,8 @@ alias mesh='sqlmesh'
 alias tails='tailscale'
 alias python='python3'
 alias hq='htmlq'
+alias gpp='g++'
+
 
 alias rc='nvim ~/.mds/.rc.md'
 alias todo='nvim ~/.mds/.todo.md'

@@ -151,7 +151,7 @@ return {
     -- window_background_opacity = 1.0,
     -- window_decorations = "RESIZE",
     -- debug_key_events = true,
-    window_close_confirmation = 'NeverPrompt',
+    -- window_close_confirmation = 'NeverPrompt',
     audible_bell = "Disabled",
     visual_bell = {
         fade_in_function = 'Linear',
