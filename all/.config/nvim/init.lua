@@ -14,7 +14,7 @@ vim.pack.add({
     -- { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",        build = ":TSUpdate" },
-    { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = 'main' },
+    -- { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = 'main' },
     { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
     { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/Vigemus/iron.nvim" },
@@ -261,25 +261,25 @@ require("gp").setup({ providers = { ollama = { disable = false, endpoint = "http
 
 local builtin = require('telescope.builtin')
 
-require("nvim-treesitter-textobjects").setup {
-    select = {
-        enable = true,
-        lookahead = true,
-        keymaps = {
-            ["af"] = "@function.outer",
-            ["if"] = "@function.inner",
-            ["ac"] = "@class.outer",
-            ["ic"] = "@class.inner",
-        },
-        select_modes = {
-            ['@parameter.outer'] = 'v',
-            ['@function.outer'] = 'V',
-            ['@class.outer'] = '<c-v>',
-        },
-    },
-    include_surrounding_whitespace = false,
-}
-
+-- require("nvim-treesitter-textobjects").setup {
+--     select = {
+--         enable = true,
+--         lookahead = true,
+--         keymaps = {
+--             ["af"] = "@function.outer",
+--             ["if"] = "@function.inner",
+--             ["ac"] = "@class.outer",
+--             ["ic"] = "@class.inner",
+--         },
+--         select_modes = {
+--             ['@parameter.outer'] = 'v',
+--             ['@function.outer'] = 'V',
+--             ['@class.outer'] = '<c-v>',
+--         },
+--     },
+--     include_surrounding_whitespace = false,
+-- }
+--
 local map = vim.keymap.set
 
 map({ 't' }, '<Esc>', [[<C-\><C-n>]], { noremap = true })
