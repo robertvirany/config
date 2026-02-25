@@ -175,11 +175,11 @@ return {
         --     mods = "LEADER",
         --     action = "Tab",
         -- },
-        {
-            key = 'Space',
-            mods = 'LEADER',
-            action = act.SendKey { key = 'Tab', mods = 'NONE' },
-        },
+        -- {
+        --     key = 'Space',
+        --     mods = 'LEADER',
+        --     action = act.SendKey { key = 'Tab', mods = 'NONE' },
+        -- },
         {
             key = "A",
             mods = "OPT|SHIFT",
@@ -234,27 +234,27 @@ return {
                 pane:move_to_new_window()
             end)
         },
+        -- {
+        --     key = "m",
+        --     mods = "LEADER",
+        --     action = wezterm.action_callback(function(win, pane)
+        --         pane:move_to_new_window()
+        --     end)
+        -- },
         {
             key = "m",
-            mods = "LEADER",
+            mods = "SUPER",
             action = wezterm.action_callback(function(win, pane)
                 pane:move_to_new_window()
             end)
         },
-        {
-            key = "m",
-            mods = "SUPER",
-            action = wezterm.action_callback(function(win, pane)
-                pane:move_to_new_window()
-            end)
-        },
-        {
-            key = "y",
-            mods = "LEADER",
-            action = wezterm.action_callback(function(win, pane)
-                pane:move_to_new_tab()
-            end)
-        },
+        -- {
+        --     key = "y",
+        --     mods = "LEADER",
+        --     action = wezterm.action_callback(function(win, pane)
+        --         pane:move_to_new_tab()
+        --     end)
+        -- },
         {
             key = "y",
             mods = "SUPER",
@@ -262,26 +262,26 @@ return {
                 pane:move_to_new_tab()
             end)
         },
-        {
-            key = "h",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Left',
-        },
-        {
-            key = "l",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Right',
-        },
-        {
-            key = "j",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Down',
-        },
-        {
-            key = "k",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Up',
-        },
+        -- {
+        --     key = "h",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Left',
+        -- },
+        -- {
+        --     key = "l",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Right',
+        -- },
+        -- {
+        --     key = "j",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Down',
+        -- },
+        -- {
+        --     key = "k",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Up',
+        -- },
         {
             key = "h",
             mods = "SUPER",
@@ -302,26 +302,26 @@ return {
             mods = "SUPER",
             action = wezterm.action.ActivatePaneDirection 'Up',
         },
-        {
-            key = "LeftArrow",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Left',
-        },
-        {
-            key = "RightArrow",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Right',
-        },
-        {
-            key = "DownArrow",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Down',
-        },
-        {
-            key = "UpArrow",
-            mods = "LEADER",
-            action = wezterm.action.ActivatePaneDirection 'Up',
-        },
+        -- {
+        --     key = "LeftArrow",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Left',
+        -- },
+        -- {
+        --     key = "RightArrow",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Right',
+        -- },
+        -- {
+        --     key = "DownArrow",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Down',
+        -- },
+        -- {
+        --     key = "UpArrow",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivatePaneDirection 'Up',
+        -- },
         -- {
         --     key = "p",
         --     mods = "LEADER",
@@ -342,36 +342,36 @@ return {
         --     mods = "SUPER",
         --     action = wezterm.action.ActivateTabRelative(1),
         -- },
+        -- {
+        --     key = ",",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(-1),
+        -- },
+        -- {
+        --     key = ".",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(1),
+        -- },
         {
             key = ",",
-            mods = "LEADER",
+            mods = "SUPER",
             action = wezterm.action.ActivateTabRelative(-1),
         },
         {
             key = ".",
-            mods = "LEADER",
-            action = wezterm.action.ActivateTabRelative(1),
-        },
-        {
-            key = ",",
-            mods = "SUPER",
-            action = wezterm.action.ActivateTabRelative(-1),
-        },
-        {
-            key = ".",
             mods = "SUPER",
             action = wezterm.action.ActivateTabRelative(1),
         },
-        {
-            key = "[",
-            mods = "LEADER",
-            action = wezterm.action.ActivateTabRelative(-1),
-        },
-        {
-            key = "]",
-            mods = "LEADER",
-            action = wezterm.action.ActivateTabRelative(1),
-        },
+        -- {
+        --     key = "[",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(-1),
+        -- },
+        -- {
+        --     key = "]",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateTabRelative(1),
+        -- },
         {
             key = "[",
             mods = "SUPER",
@@ -382,26 +382,26 @@ return {
             mods = "SUPER",
             action = wezterm.action.ActivateTabRelative(1),
         },
-        {
-            key = "w",
-            mods = "LEADER",
-            action = wezterm.action.CloseCurrentPane({ confirm = false }),
-        },
+        -- {
+        --     key = "w",
+        --     mods = "LEADER",
+        --     action = wezterm.action.CloseCurrentPane({ confirm = false }),
+        -- },
         {
             key = "w",
             mods = "SUPER",
             action = wezterm.action.CloseCurrentPane({ confirm = false }),
         },
-        {
-            key = "t",
-            mods = "LEADER",
-            action = wezterm.action.SpawnTab 'CurrentPaneDomain',
-        },
-        {
-            key = ":",
-            mods = "LEADER",
-            action = wezterm.action.ActivateCopyMode,
-        },
+        -- {
+        --     key = "t",
+        --     mods = "LEADER",
+        --     action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+        -- },
+        -- {
+        --     key = ":",
+        --     mods = "LEADER",
+        --     action = wezterm.action.ActivateCopyMode,
+        -- },
         {
             key = ":", -- not working
             mods = "SUPER",
