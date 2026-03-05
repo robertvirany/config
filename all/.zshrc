@@ -33,6 +33,7 @@ setopt INC_APPEND_HISTORY
 setopt APPEND_HISTORY
 setopt SHARE_HISTORY
 setopt NO_BEEP
+setopt autocd
 export HISTSIZE=1000000
 export SAVEHIST=1000000
 export HISTFILE=~/.zsh_history

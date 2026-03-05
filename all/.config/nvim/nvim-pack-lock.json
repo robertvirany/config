@@ -20,6 +20,10 @@
       "rev": "c37f154b97690c4925fef4e35ffdbf2c844b5f4e",
       "src": "https://github.com/Robitx/gp.nvim"
     },
+    "image.nvim": {
+      "rev": "da2be65c153ba15a14a342b05591652a6df70d58",
+      "src": "https://github.com/3rd/image.nvim"
+    },
     "iron.nvim": {
       "rev": "746414e67adcd3ad2ad5dbe6262543b55ac3f3cd",
       "src": "https://github.com/Vigemus/iron.nvim"
@@ -39,6 +43,10 @@
     "mini.pick": {
       "rev": "0c56dc3ef9b15e9659ce09331fdc82449349701b",
       "src": "https://github.com/echasnovski/mini.pick"
+    },
+    "molten-nvim": {
+      "rev": "c1db39e78fe18559d8f2204bf5c4d476bdc80d3e",
+      "src": "https://github.com/benlubas/molten-nvim"
     },
     "nvim-lspconfig": {
       "rev": "d696e36d5792daf828f8c8e8d4b9aa90c1a10c2a",
@@ -92,6 +100,10 @@
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
       "src": "https://github.com/tpope/vim-fugitive"
+    },
+    "wezterm.nvim": {
+      "rev": "032c33b621b96cc7228955b4352b48141c482098",
+      "src": "https://github.com/willothy/wezterm.nvim"
     },
     "windsurf.nvim": {
       "rev": "821b570b526dbb05b57aa4ded578b709a704a38a",

@@ -33,6 +33,9 @@ vim.pack.add({
     { src = "https://github.com/jiaoshijie/undotree" },
     -- { src = "https://github.com/vim-scripts/YankRing.vim" },
     { src = "https://github.com/ojroques/nvim-osc52" },
+    { src = "https://github.com/willothy/wezterm.nvim" },
+    { src = "https://github.com/3rd/image.nvim" },
+    { src = "https://github.com/benlubas/molten-nvim",                   build = ":UpdateRemotePlugins" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
 })
@@ -358,6 +361,7 @@ vim.keymap.set({ 'n', 'x' }, '<leader><CR>', '<C-^>')
 vim.keymap.set({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
 -- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
+vim.keymap.set('n', '<C-l>', ':mod<CR>')
 
 -- TODO: move to snippets RV 01/02/2026
 vim.keymap.set("i", "<c-l>", function()
@@ -368,13 +372,23 @@ vim.keymap.set({ 'n', 'x' }, '<leader>rb,', ':DBUIToggle<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>rs,', '<leader>W')
 
-vim.keymap.set({ 'n', 'x'}, "<leader>'", ':mod<CR>')
+vim.keymap.set({ 'n', 'x' }, "<leader>'", ':mod<CR>')
 
 
 vim.diagnostic.config({
     virtual_text = true,
     -- virtual_lines = true,
 })
+
+require("image").setup({
+  backend = "kitty",
+})
+
+vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
+-- vim.g.molten_image_provider = "wezterm"
+-- vim.g.molten_auto_open_output = false
+vim.g.molten_image_provider = "image.nvim"
+vim.g.molten_auto_open_output = true
 
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
