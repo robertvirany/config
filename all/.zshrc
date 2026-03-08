@@ -4,6 +4,7 @@ if [[ -d /opt/homebrew ]]; then
     source $(brew --prefix)/opt/fzf/shell/completion.zsh
     export PATH="/opt/homebrew/bin:$PATH"
     export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+    export ZATHURA_PLUGINS_PATH=/opt/homebrew/opt/zathura-pdf-poppler
 else
     # export PATH=""
     source /usr/share/fzf/shell/key-bindings.zsh
@@ -120,7 +121,7 @@ alias wt='wezterm'
 
 
 alias dps='docker ps --format "table {{.Names}}\t{{.ID}}\t{{.Status}}\t{{.Command}}"'
-alias sql='sqlite3'
+alias sql='litecli'
 alias mesh='sqlmesh'
 alias tails='tailscale'
 alias python='python3'
