@@ -2,7 +2,7 @@ local vim = vim --suppress lsp warnings, nvim v0.12 bug
 
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = "\\"
 vim.o.timeoutlen = 3000
 
 
@@ -314,10 +314,14 @@ map({ 'n', 'x', 'o' }, 'gl', '$')
 map({ 'n', 'x', 'o' }, 'gh', '0')
 -- map({ 'n', 'x', 'o' }, 'gj', '<C-d>')
 -- map({ 'n', 'x', 'o' }, 'gk', '<C-u>')
-map({ 'n', 'x', 'o' }, '<C-j>', '2<C-W>-')
-map({ 'n', 'x', 'o' }, '<C-k>', '2<C-W>+')
-map({ 'n', 'x', 'o' }, '<C-h>', '8<C-W><')
-map({ 'n', 'x', 'o' }, '<C-l>', '8<C-W>>')
+map({ 'n', 'x', 'o' }, '<C-j>', '<C-w>j')
+map({ 'n', 'x', 'o' }, '<C-k>', '<C-w>k')
+map({ 'n', 'x', 'o' }, '<C-h>', '<C-w>h')
+map({ 'n', 'x', 'o' }, '<C-l>', '<C-w>l')
+map({ 'n', 'x', 'o' }, '<C-Down>', '2<C-W>-')
+map({ 'n', 'x', 'o' }, '<C-Up>', '2<C-W>+')
+map({ 'n', 'x', 'o' }, '<C-Left>', '8<C-W><')
+map({ 'n', 'x', 'o' }, '<C-Right>', '8<C-W>>')
 map({ 'n', 'x', 'o' }, 'Y', 'y$')
 
 
@@ -354,7 +358,7 @@ vim.o.splitbelow = true
 vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
 vim.keymap.set({ 'n', 'x' }, '<leader>e', ':w<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':qa<CR>')
+vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>E', ':x<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>a', 'ggVG')
 vim.keymap.set({ 'n', 'x' }, '<leader><CR>', '<C-^>')
