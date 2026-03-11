@@ -291,6 +291,8 @@ map({ 'n', 'x' }, '<leader>o<CR>', ':Oil<CR>')
 map({ 'n', 'x' }, '<leader>oj', ':sp .<CR>')
 map({ 'n', 'x' }, '<leader>ol', ':vsp .<CR>')
 
+map({ 'n', 'x' }, '<leader>u', ':Undotree<CR>')
+
 map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
 map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 map({ 'n', 'x' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
@@ -356,6 +358,10 @@ vim.o.splitbelow = true
 -- nnoremap <S-tab> <<
 
 vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
+vim.keymap.set({ 'n', 'x' }, 'gz', '}kA')
+vim.keymap.set({ 'n', 'x' }, 'gZ', '{ji')
+vim.keymap.set({ 'n', 'x' }, 'g[', 'ggI')
+vim.keymap.set({ 'n', 'x' }, 'g]', 'GA')
 vim.keymap.set({ 'n', 'x' }, '<leader>e', ':w<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
