@@ -212,12 +212,27 @@ return {
         {
             key = "e",
             mods = "SUPER",
-            action = wezterm.action.SplitHorizontal({}),
+            action = wezterm.action.SplitPane({ direction = 'Right' }),
         },
         {
             key = "d",
             mods = "SUPER",
-            action = wezterm.action.SplitVertical({}),
+            action = wezterm.action.SplitPane({ direction = 'Down' }),
+        },
+        {
+            key = "g",
+            mods = "SUPER",
+            action = wezterm.action.SplitPane({ direction = 'Left' }),
+        },
+        {
+            key = "u",
+            mods = "SUPER",
+            action = wezterm.action.SplitPane({ direction = 'Up' }),
+        },
+        {
+            key = "p",
+            mods = "SUPER",
+            action = wezterm.action.SpawnCommandInNewTab({ args = { 'btop' } }),
         },
         {
             key = "W",
@@ -417,7 +432,7 @@ return {
         --     action = wezterm.action.ActivateCopyMode,
         -- },
         {
-            key = ":", -- not working
+            key = ";",
             mods = "SUPER",
             action = wezterm.action.ActivateCopyMode,
         },
