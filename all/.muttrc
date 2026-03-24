@@ -23,6 +23,7 @@ macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract U
 
 macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
+bind index G last-entry
 # bind editor <space>q quit_editor
 
 

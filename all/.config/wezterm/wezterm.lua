@@ -501,7 +501,17 @@ return {
             mods = "OPT|SHIFT",
             action = wezterm.action.AdjustPaneSize { 'Down', 2 },
         },
-
+        table.unpack((function()
+            local k = {}
+            for i = 1, 9 do
+                k[#k + 1] = {
+                    key = tostring(i),
+                    mods = 'LEADER',
+                    action = act.ActivateTab(i - 1),
+                }
+            end
+            return k
+        end)()),
     },
     mouse_bindings = {
         -- disable default click-to-open
@@ -516,5 +526,5 @@ return {
             mods = "CTRL",
             action = wezterm.action.OpenLinkAtMouseCursor,
         },
-    },
+    }
 }
