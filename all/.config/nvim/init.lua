@@ -120,7 +120,7 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp' }, })
 
 vim.cmd("packadd nvim.undotree")
 require("undotree").setup({
@@ -297,7 +297,6 @@ map({ 'n', 'x' }, '<leader>ff', builtin.find_files, { desc = 'Telescope find fil
 map({ 'n', 'x' }, '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
 map({ 'n', 'x' }, '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
--- map({ 'n', 'v' }, '<leader>fm, search mail')
 
 
 map({ 'n', 'x' }, '<leader>y', '"+y<CR>')
@@ -332,6 +331,7 @@ vim.lsp.enable({ 'pyright' })
 vim.lsp.enable({ 'marksman' }) -- not working on .rc.md RV 12/31/2025
 -- vim.lsp.enable({ 'tsserver' }) -- not working RV 12/30/2025
 vim.lsp.enable({ 'json-lsp' })
+vim.lsp.enable({ 'omnisharp' })
 
 -- opts
 vim.cmd("colorscheme wildcharm")
@@ -391,7 +391,7 @@ vim.diagnostic.config({
 })
 
 require("image").setup({
-  backend = "kitty",
+    backend = "kitty",
 })
 
 vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")

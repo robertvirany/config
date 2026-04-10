@@ -401,16 +401,16 @@ return {
         --     mods = "LEADER",
         --     action = wezterm.action.ActivateTabRelative(1),
         -- },
-        {
-            key = "[",
-            mods = "SUPER",
-            action = wezterm.action.ActivateTabRelative(-1),
-        },
-        {
-            key = "]",
-            mods = "SUPER",
-            action = wezterm.action.ActivateTabRelative(1),
-        },
+        -- {
+        --     key = "[",
+        --     mods = "SUPER",
+        --     action = wezterm.action.ActivateTabRelative(-1),
+        -- },
+        -- {
+        --     key = "]",
+        --     mods = "SUPER",
+        --     action = wezterm.action.ActivateTabRelative(1),
+        -- },
         -- {
         --     key = "w",
         --     mods = "LEADER",

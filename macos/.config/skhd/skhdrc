@@ -18,21 +18,19 @@ cmd + shift - f : open -na 'firefox'
 cmd - i : open -a 'wezterm'
 cmd + shift - i : open -na 'wezterm'
 
-# set $hyper = ctrl + alt + shift + cmd
-# set $hyper - f : open -a 'firefox'
-# set $hyper - i : open -a 'wezterm'
 
+cmd - 0x1E : yabai -m space --focus next || yabai -m space --focus first
+cmd - 0x21 : yabai -m space --focus prev || yabai -m space --focus last
+cmd + alt - 0x1E : yabai -m space --create && yabai -m space --focus last
+cmd + alt - 0x21 : for w in $(yabai -m query --windows --space last | jq '.[].id'); do yabai -m window $w --space prev; done && yabai -m space --destroy last && yabai -m space --focus last
 
-# cmd - o : open -a 'qutebrowser'
-
-#cmd - ] : yabai -m space --focus next || yabai -m space --focus first
-#cmd - [ : yabai -m space --focus prev || yabai -m space --focus last
+cmd - 0 : yabai -m space --focus last
 
 #alt - 4 : open -a 'obsidian'
 
 # Cycle Space Focus
-cmd - tab : yabai -m space --focus next || yabai -m space --focus first
-cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
+# cmd - tab : yabai -m space --focus next || yabai -m space --focus first
+# cmd - escape : yabai -m space --focus prev || yabai -m space --focus last
 
 # Direct Space Focus
 ## Must implement this section
