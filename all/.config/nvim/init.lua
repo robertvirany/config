@@ -324,6 +324,8 @@ map({ 'n', 'x', 'o' }, '<C-Up>', '2<C-W>+')
 map({ 'n', 'x', 'o' }, '<C-Left>', '8<C-W><')
 map({ 'n', 'x', 'o' }, '<C-Right>', '8<C-W>>')
 map({ 'n', 'x', 'o' }, 'Y', 'y$')
+map({ 'n', 'x', 'o' }, 'gy', 'gg"+yG')
+map({ 'n', 'x', 'o' }, 'Q', 'GA')
 
 
 vim.lsp.enable({ 'lua_ls' })

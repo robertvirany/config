@@ -126,7 +126,10 @@ alias mesh='sqlmesh'
 alias tails='tailscale'
 alias python='python3'
 alias hq='htmlq'
+
 alias gpp='g++'
+alias clangpp='clang++'
+alias clpp='clang++'
 
 
 alias rc='nvim ~/.mds/.rc.md'
