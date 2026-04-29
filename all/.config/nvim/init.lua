@@ -120,7 +120,7 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp', 'kotlin+lsp' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp', 'kotlin_lsp' }, })
 
 vim.cmd("packadd nvim.undotree")
 require("undotree").setup({
