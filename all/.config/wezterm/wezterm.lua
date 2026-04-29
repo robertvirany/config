@@ -177,18 +177,18 @@ return {
     },
     ssh_backend = "Ssh2",
     -- disable_default_key_bindings = true, -- one day
-    leader = {
-        key = 'Tab',
-        mods = 'NONE',
-        -- mods = 'SUPER',
-        timeout_milliseconds = 750
-    },
+    -- leader = {
+    --     key = 'Tab',
+    --     mods = 'NONE',
+    --     -- mods = 'SUPER',
+    --     timeout_milliseconds = 750
+    -- },
     keys = {
-        { -- attempting to emit tab after double tap tab in insert mode (and wherever) 01/17/2026
-            key = "Tab",
-            mods = "LEADER",
-            action = act.SendKey { key = 'Tab', mods = 'NONE' },
-        },
+        -- { -- attempting to emit tab after double tap tab in insert mode (and wherever) 01/17/2026
+        --     key = "Tab",
+        --     mods = "LEADER",
+        --     action = act.SendKey { key = 'Tab', mods = 'NONE' },
+        -- },
         {
             key = 'Space',
             mods = 'LEADER',

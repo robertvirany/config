@@ -120,7 +120,7 @@ vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
 
 require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp' }, })
+require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp', 'kotlin+lsp' }, })
 
 vim.cmd("packadd nvim.undotree")
 require("undotree").setup({
@@ -334,6 +334,7 @@ vim.lsp.enable({ 'marksman' }) -- not working on .rc.md RV 12/31/2025
 -- vim.lsp.enable({ 'tsserver' }) -- not working RV 12/30/2025
 vim.lsp.enable({ 'json-lsp' })
 vim.lsp.enable({ 'omnisharp' })
+vim.lsp.enable({ 'kotlin_lsp' })
 
 -- opts
 vim.cmd("colorscheme wildcharm")
