@@ -190,9 +190,9 @@ return {
         --     action = act.SendKey { key = 'Tab', mods = 'NONE' },
         -- },
         {
-            key = 'Space',
-            mods = 'LEADER',
-            action = act.SendKey { key = 'Tab', mods = 'NONE' },
+            key = 'Return',
+            mods = 'SUPER',
+            action = act.TogglePaneZoomState,
         },
         {
             key = "A",

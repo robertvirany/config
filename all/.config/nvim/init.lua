@@ -8,15 +8,14 @@ vim.o.timeoutlen = 3000
 
 -- pack (nvim 0.12)
 
-
 vim.pack.add({
     { src = "https://github.com/stevearc/oil.nvim" },
     -- { src = "https://github.com/echasnovski/mini.pick" },
     { src = "https://github.com/neovim/nvim-lspconfig" },
     { src = "https://github.com/nvim-treesitter/nvim-treesitter",        build = ":TSUpdate" },
     -- { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects", version = 'main' },
-    { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-    { src = "https://github.com/mason-org/mason.nvim" },
+    -- { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+    -- { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/Vigemus/iron.nvim" },
     { src = "https://github.com/tpope/vim-dadbod" },
     { src = "https://github.com/kristijanhusak/vim-dadbod-ui" },
@@ -39,24 +38,6 @@ vim.pack.add({
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
 })
-
-
--- local osc52 = require("osc52")
-
--- vim.g.clipboard = {
---   name = "osc52",
---   copy = {
---     ["+"] = osc52.copy("+"),
---     ["*"] = osc52.copy("*"),
---   },
---   paste = {
---     ["+"] = osc52.paste("+"),
---     ["*"] = osc52.paste("*"),
---   },
--- }
---
---
-
 
 
 
@@ -117,10 +98,15 @@ iron.setup {
 vim.keymap.set('n', '<space>rf', '<cmd>IronFocus<cr>')
 vim.keymap.set('n', '<space>rh', '<cmd>IronHide<cr>')
 
+vim.lsp.config('clangd', {
+    cmd = {
+        "clangd",
+        "--fallback-style={BasedOnStyle: LLVM, PointerAlignment: Right}"
+    },
+})
 
-
-require("mason").setup()
-require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp', 'kotlin_lsp' }, })
+-- require("mason").setup()
+-- require("mason-lspconfig").setup({ ensure_installed = { 'lua_ls', 'rust_analyzer', 'pyright', 'ruff', 'eslint', 'ts_ls', 'yamlls', 'marksman', 'sqls', 'omnisharp', 'kotlin_lsp' }, })
 
 vim.cmd("packadd nvim.undotree")
 require("undotree").setup({
@@ -283,6 +269,48 @@ local builtin = require('telescope.builtin')
 --     include_surrounding_whitespace = false,
 -- }
 --
+
+
+
+
+-- Language Servers
+
+vim.lsp.enable({ 'lua_ls' })
+vim.lsp.enable({ 'pyright' })
+vim.lsp.enable({ 'marksman' }) -- not working on .rc.md RV 12/31/2025
+-- vim.lsp.enable({ 'tsserver' }) -- not working RV 12/30/2025
+vim.lsp.enable({ 'json-lsp' })
+vim.lsp.enable({ 'omnisharp' })
+vim.lsp.enable({ 'kotlin_lsp' })
+vim.lsp.enable({ 'clangd' })
+
+-- Vim Options
+
+vim.cmd("colorscheme wildcharm")
+
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.scrolloff = 8
+vim.o.swapfile = false
+vim.o.winborder = "rounded"
+vim.o.signcolumn = "yes"
+vim.o.undofile = true
+vim.o.splitright = true
+vim.o.splitbelow = true
+
+
+-- keymaps
+
+-- nnoremap <tab> >>
+-- nnoremap <S-tab> <<
+
+-- Keybinds
+
 local map = vim.keymap.set
 
 map({ 't' }, '<Esc>', [[<C-\><C-n>]], { noremap = true })
@@ -327,39 +355,6 @@ map({ 'n', 'x', 'o' }, 'Y', 'y$')
 map({ 'n', 'x', 'o' }, 'gy', 'gg"+yG')
 map({ 'n', 'x', 'o' }, 'Q', 'GA')
 
-
-vim.lsp.enable({ 'lua_ls' })
-vim.lsp.enable({ 'pyright' })
-vim.lsp.enable({ 'marksman' }) -- not working on .rc.md RV 12/31/2025
--- vim.lsp.enable({ 'tsserver' }) -- not working RV 12/30/2025
-vim.lsp.enable({ 'json-lsp' })
-vim.lsp.enable({ 'omnisharp' })
-vim.lsp.enable({ 'kotlin_lsp' })
-
--- opts
-vim.cmd("colorscheme wildcharm")
-
-vim.o.number = true
-vim.o.relativenumber = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
-vim.o.scrolloff = 8
-vim.o.swapfile = false
-vim.o.winborder = "rounded"
-vim.o.signcolumn = "yes"
-vim.o.undofile = true
-vim.o.splitright = true
-vim.o.splitbelow = true
-
-
--- keymaps
-
--- nnoremap <tab> >>
--- nnoremap <S-tab> <<
-
 vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
 vim.keymap.set({ 'n', 'x' }, 'gz', '}kA')
 vim.keymap.set({ 'n', 'x' }, 'gZ', '{ji')
@@ -370,11 +365,13 @@ vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>E', ':x<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>a', 'ggVG')
-vim.keymap.set({ 'n', 'x' }, '<leader><CR>', '<C-^>')
+vim.keymap.set({ 'n', 'x' }, '<leader><leader>', '<C-^>')
+vim.keymap.set({ 'n', 'x' }, '<leader><CR>', ':Oil<CR>')
 vim.keymap.set({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
+vim.keymap.set({ 'n', 'x' }, '<leader>gg', ':Gitsigns blame<CR>')
 -- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
-vim.keymap.set('n', '<C-l>', ':mod<CR>')
+-- vim.keymap.set('n', '<C-l>', ':mod<CR>')
 
 -- TODO: move to snippets RV 01/02/2026
 vim.keymap.set("i", "<c-l>", function()
