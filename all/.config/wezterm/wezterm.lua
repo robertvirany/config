@@ -119,6 +119,11 @@ return {
         ['dark-pastel-blue-fixed'] = scheme,
     },
     color_scheme = 'dark-pastel-blue-fixed',
+    colors = {
+        cursor_bg = "ff00cc",
+        cursor_fg = "000000",
+        cursor_border = "ff00cc",
+    },
     -- color_scheme = "Dark Pastel",
     -- colors = {
     --     --     background = "#000000",
@@ -190,7 +195,7 @@ return {
         --     action = act.SendKey { key = 'Tab', mods = 'NONE' },
         -- },
         {
-            key = 'Return',
+            key = 'p',
             mods = 'SUPER',
             action = act.TogglePaneZoomState,
         },
@@ -230,7 +235,7 @@ return {
             action = wezterm.action.SplitPane({ direction = 'Up' }),
         },
         {
-            key = "p",
+            key = "Backspace",
             mods = "SUPER",
             action = wezterm.action.SpawnCommandInNewTab({ args = { 'btop' } }),
         },

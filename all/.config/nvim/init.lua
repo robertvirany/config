@@ -2,7 +2,6 @@ local vim = vim --suppress lsp warnings, nvim v0.12 bug
 
 
 vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
 vim.o.timeoutlen = 3000
 
 
@@ -233,11 +232,53 @@ require('gitsigns').setup {
     },
 }
 
+-- custom oil.nvim column for loc/dentries
+-- Its being fucky 06/04/2026
+
+local cache = {}
+
+local constants = require("oil.constants")
+local FIELD_NAME = constants.FIELD_NAME
+local FIELD_TYPE = constants.FIELD_TYPE
+
+local function stat_column(entry)
+    local dir = require("oil").get_current_dir()
+    local name = entry[FIELD_NAME]
+    local typ = entry[FIELD_TYPE]
+    local path = dir .. name
+
+    if cache[path] then
+        return cache[path]
+    end
+
+    local value
+    if typ == "directory" then
+        local ok, entries = pcall(vim.fn.readdir, path)
+        value = ok and tostring(#entries) or "-"
+    else
+        local ok, lines = pcall(vim.fn.readfile, path)
+        value = ok and tostring(#lines) or "-"
+    end
+
+    cache[path] = value
+    return value
+end
+
+require("oil.columns").register("stats", {
+    render = function(entry)
+        return stat_column(entry)
+    end,
+    parse = function(line)
+        return nil, line
+    end
+})
+
 require("oil").setup(
     {
         columns = {
             "icon",
             "mtime",
+            -- "stats",
         },
         view_options = {
             show_hidden = true,
@@ -246,7 +287,6 @@ require("oil").setup(
 )
 
 require("gp").setup({ providers = { ollama = { disable = false, endpoint = "http://localhost:11434/v1/chat/completions", secret = "ollama_secret", }, } }) -- not really working RV 12/31/2025
--- require("lspconfig")
 
 local builtin = require('telescope.builtin')
 
@@ -283,6 +323,22 @@ vim.lsp.enable({ 'json-lsp' })
 vim.lsp.enable({ 'omnisharp' })
 vim.lsp.enable({ 'kotlin_lsp' })
 vim.lsp.enable({ 'clangd' })
+
+vim.filetype.add({
+  extension = {
+    ll = "llvm",
+    llvm = "llvm",
+  },
+})
+
+vim.lsp.config("llvm_ir_lsp", {
+  cmd = { "/Users/robert/projects/llvm-ir-lsp/build/llvm-ir-lsp" },
+  filetypes = { "llvm" },
+  root_markers = { ".git" },
+})
+
+vim.lsp.enable("llvm_ir_lsp")
+
 
 -- Vim Options
 
@@ -330,7 +386,6 @@ map({ 'n', 'x' }, '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags
 map({ 'n', 'x' }, '<leader>y', '"+y<CR>')
 map({ 'n', 'x' }, '<leader>d', '"+d<CR>')
 map({ 'n', 'x' }, '<leader>p', '"+p<CR>')
-map({ 'n', 'x' }, [[\p]], '"0p<CR>')
 map({ 'n', 'x' }, '<leader>w', '<c-w>', { remap = true })
 map({ 'n', 'x' }, '<c-w>e', ':wq<CR>')
 
@@ -354,6 +409,7 @@ map({ 'n', 'x', 'o' }, '<C-Right>', '8<C-W>>')
 map({ 'n', 'x', 'o' }, 'Y', 'y$')
 map({ 'n', 'x', 'o' }, 'gy', 'gg"+yG')
 map({ 'n', 'x', 'o' }, 'Q', 'GA')
+map({ 'n', 'x', 'o' }, 'q;', 'q:')
 
 vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
 vim.keymap.set({ 'n', 'x' }, 'gz', '}kA')
@@ -371,7 +427,41 @@ vim.keymap.set({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
 vim.keymap.set({ 'n', 'x' }, '<leader>gg', ':Gitsigns blame<CR>')
 -- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
 vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
--- vim.keymap.set('n', '<C-l>', ':mod<CR>')
+
+-- backwards repeat is not quite working as expected in all cases - RV 06/24/2026
+local last_bracket_jump = nil
+local pending_bracket = nil
+
+vim.on_key(function(key)
+    local k = vim.fn.keytrans(key)
+
+    if pending_bracket then
+        last_bracket_jump = k
+        pending_bracket = nil
+        return
+    end
+
+    if k == "]" or k == "[" then
+        pending_bracket = k
+    end
+end, vim.api.nvim_create_namespace("remember-bracket-jump"))
+
+local function repeat_bracket_jump(dir)
+    if not last_bracket_jump then
+        return
+    end
+
+    local prefix = dir > 0 and "]" or "["
+    vim.api.nvim_feedkeys(prefix .. last_bracket_jump, "m", false)
+end
+
+map("n", [[\]], function()
+    repeat_bracket_jump(1)
+end, { desc = "Repeat last ] jump forward", nowait = true })
+
+map("n", [[|]], function()
+    repeat_bracket_jump(-1)
+end, { desc = "Repeat last ] jump backward", nowait = true })
 
 -- TODO: move to snippets RV 01/02/2026
 vim.keymap.set("i", "<c-l>", function()
