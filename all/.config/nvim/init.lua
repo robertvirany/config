@@ -233,43 +233,122 @@ require('gitsigns').setup {
 }
 
 -- custom oil.nvim column for loc/dentries
--- Its being fucky 06/04/2026
 
-local cache = {}
+local stats_cache = {}
+local stats_refresh_pending = {}
+local stats_queue = {}
+local stats_active_jobs = 0
+local stats_max_jobs = 6
 
 local constants = require("oil.constants")
 local FIELD_NAME = constants.FIELD_NAME
 local FIELD_TYPE = constants.FIELD_TYPE
+local FIELD_META = constants.FIELD_META
 
-local function stat_column(entry)
+local function oil_entry_is_dir(entry)
+    if entry[FIELD_TYPE] == "directory" then
+        return true
+    end
+
+    local meta = entry[FIELD_META]
+    return entry[FIELD_TYPE] == "link" and meta and meta.link_stat and meta.link_stat.type == "directory"
+end
+
+local function schedule_oil_stats_refresh(bufnr)
+    if stats_refresh_pending[bufnr] then
+        return
+    end
+
+    stats_refresh_pending[bufnr] = true
+    vim.defer_fn(function()
+        stats_refresh_pending[bufnr] = nil
+        if vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].filetype == "oil" then
+            pcall(require("oil.view").render_buffer_async, bufnr, { refetch = false })
+        end
+    end, 120)
+end
+
+local function set_oil_stat(path, bufnr, value)
+    local cached = stats_cache[path]
+    if cached and cached.value == value then
+        return
+    end
+
+    stats_cache[path] = { value = value }
+    schedule_oil_stats_refresh(bufnr)
+end
+
+local run_next_oil_stat_job
+
+local function run_oil_stat_job(job)
+    local cmd = job.is_dir
+        and { "find", job.path, "-mindepth", "1", "-maxdepth", "1" }
+        or { "wc", "-l", job.path }
+
+    vim.system(cmd, { text = true }, vim.schedule_wrap(function(result)
+        stats_active_jobs = stats_active_jobs - 1
+
+        if result.code ~= 0 then
+            set_oil_stat(job.path, job.bufnr, "-")
+            run_next_oil_stat_job()
+            return
+        end
+
+        local value
+        if job.is_dir then
+            local stdout = result.stdout or ""
+            local _, count = stdout:gsub("\n", "\n")
+            if stdout ~= "" and not stdout:match("\n$") then
+                count = count + 1
+            end
+            value = tostring(count)
+        else
+            value = (result.stdout or ""):match("^%s*(%d+)") or "-"
+        end
+
+        set_oil_stat(job.path, job.bufnr, value)
+        run_next_oil_stat_job()
+    end))
+end
+
+run_next_oil_stat_job = function()
+    while stats_active_jobs < stats_max_jobs and #stats_queue > 0 do
+        stats_active_jobs = stats_active_jobs + 1
+        run_oil_stat_job(table.remove(stats_queue, 1))
+    end
+end
+
+local function request_oil_stat(path, is_dir, bufnr)
+    stats_cache[path] = { pending = true }
+    table.insert(stats_queue, { path = path, is_dir = is_dir, bufnr = bufnr })
+    run_next_oil_stat_job()
+end
+
+local function stat_column(entry, bufnr)
     local dir = require("oil").get_current_dir()
     local name = entry[FIELD_NAME]
-    local typ = entry[FIELD_TYPE]
+    if not dir or not name then
+        return "-"
+    end
+
     local path = dir .. name
 
-    if cache[path] then
-        return cache[path]
+    local cached = stats_cache[path]
+    if cached then
+        return cached.value or "..."
     end
 
-    local value
-    if typ == "directory" then
-        local ok, entries = pcall(vim.fn.readdir, path)
-        value = ok and tostring(#entries) or "-"
-    else
-        local ok, lines = pcall(vim.fn.readfile, path)
-        value = ok and tostring(#lines) or "-"
-    end
-
-    cache[path] = value
-    return value
+    request_oil_stat(path, oil_entry_is_dir(entry), bufnr)
+    return "..."
 end
 
 require("oil.columns").register("stats", {
-    render = function(entry)
-        return stat_column(entry)
+    render = function(entry, conf, bufnr)
+        return stat_column(entry, bufnr)
     end,
     parse = function(line)
-        return nil, line
+        local stat, rest = line:match("^(%S+)%s+(.*)$")
+        return stat, rest
     end
 })
 
@@ -278,7 +357,7 @@ require("oil").setup(
         columns = {
             "icon",
             "mtime",
-            -- "stats",
+            "stats",
         },
         view_options = {
             show_hidden = true,
@@ -328,6 +407,7 @@ vim.filetype.add({
   extension = {
     ll = "llvm",
     llvm = "llvm",
+    td = "tablegen",
   },
 })
 
@@ -338,6 +418,17 @@ vim.lsp.config("llvm_ir_lsp", {
 })
 
 vim.lsp.enable("llvm_ir_lsp")
+
+vim.lsp.config("tblgen_lsp", {
+  cmd = {
+    "/Users/robert/repos/llvm-project/build-tblgen-lsp/bin/tblgen-lsp-server",
+    "-tablegen-compilation-database=/Users/robert/repos/llvm-project/build/tablegen_compile_commands.yml",
+  },
+  filetypes = { "tablegen" },
+  root_markers = { "tablegen_compile_commands.yml", ".git" },
+})
+
+vim.lsp.enable("tblgen_lsp")
 
 
 -- Vim Options
@@ -359,11 +450,6 @@ vim.o.undofile = true
 vim.o.splitright = true
 vim.o.splitbelow = true
 
-
--- keymaps
-
--- nnoremap <tab> >>
--- nnoremap <S-tab> <<
 
 -- Keybinds
 
@@ -411,24 +497,23 @@ map({ 'n', 'x', 'o' }, 'gy', 'gg"+yG')
 map({ 'n', 'x', 'o' }, 'Q', 'GA')
 map({ 'n', 'x', 'o' }, 'q;', 'q:')
 
-vim.keymap.set({ 'n', 'x' }, 'Z', 'jA')
-vim.keymap.set({ 'n', 'x' }, 'gz', '}kA')
-vim.keymap.set({ 'n', 'x' }, 'gZ', '{ji')
-vim.keymap.set({ 'n', 'x' }, 'g[', 'ggI')
-vim.keymap.set({ 'n', 'x' }, 'g]', 'GA')
-vim.keymap.set({ 'n', 'x' }, '<leader>e', ':w<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>q', ':q<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>E', ':x<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>a', 'ggVG')
-vim.keymap.set({ 'n', 'x' }, '<leader><leader>', '<C-^>')
-vim.keymap.set({ 'n', 'x' }, '<leader><CR>', ':Oil<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
-vim.keymap.set({ 'n', 'x' }, '<leader>gg', ':Gitsigns blame<CR>')
--- vim.keymap.set({ 'n', 'v' }, '<Tab>', '2W')
-vim.keymap.set('n', '<esc>', ':noh<cr><esc>')
+map({ 'n', 'x' }, 'Z', 'jA')
+map({ 'n', 'x' }, 'gz', '}kA')
+map({ 'n', 'x' }, 'gZ', '{ji')
+map({ 'n', 'x' }, 'g[', 'ggI')
+map({ 'n', 'x' }, 'g]', 'GA')
+map({ 'n', 'x' }, '<leader>e', ':w<CR>')
+map({ 'n', 'x' }, '<leader>q', ':q<CR>')
+map({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
+map({ 'n', 'x' }, '<leader>E', ':x<CR>')
+map({ 'n', 'x' }, '<leader>a', 'ggVG')
+map({ 'n', 'x' }, '<leader><leader>', '<C-^>')
+map({ 'n', 'x' }, '<leader><CR>', ':Oil<CR>')
+map({ 'n', 'x' }, '<leader>lf', vim.lsp.buf.format)
+map({ 'n', 'x' }, '<leader>gg', ':Gitsigns blame<CR>')
+-- map({ 'n', 'v' }, '<Tab>', '2W')
+map('n', '<esc>', ':noh<cr><esc>')
 
--- backwards repeat is not quite working as expected in all cases - RV 06/24/2026
 local last_bracket_jump = nil
 local pending_bracket = nil
 
@@ -436,7 +521,9 @@ vim.on_key(function(key)
     local k = vim.fn.keytrans(key)
 
     if pending_bracket then
-        last_bracket_jump = k
+        if k == "]" or k == "[" then
+            last_bracket_jump = pending_bracket .. k
+        end
         pending_bracket = nil
         return
     end
@@ -451,28 +538,34 @@ local function repeat_bracket_jump(dir)
         return
     end
 
-    local prefix = dir > 0 and "]" or "["
-    vim.api.nvim_feedkeys(prefix .. last_bracket_jump, "m", false)
+    local jump
+    if last_bracket_jump == "]]" or last_bracket_jump == "[[" then
+        jump = dir > 0 and "]]" or "[["
+    else
+        jump = dir > 0 and "][" or "[]"
+    end
+
+    vim.api.nvim_feedkeys(jump, "m", false)
 end
 
-map("n", [[\]], function()
+map({"n","x"}, [[\]], function()
     repeat_bracket_jump(1)
-end, { desc = "Repeat last ] jump forward", nowait = true })
+end, { desc = "Repeat last bracket jump forward", nowait = true })
 
-map("n", [[|]], function()
+map({"n","x"}, [[|]], function()
     repeat_bracket_jump(-1)
-end, { desc = "Repeat last ] jump backward", nowait = true })
+end, { desc = "Repeat last bracket jump backward", nowait = true })
 
 -- TODO: move to snippets RV 01/02/2026
-vim.keymap.set("i", "<c-l>", function()
+map("i", "<c-l>", function()
     return os.date("%m/%d/%Y")
 end, { expr = true })
 
-vim.keymap.set({ 'n', 'x' }, '<leader>rb,', ':DBUIToggle<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
-vim.keymap.set({ 'n', 'x' }, '<leader>rs,', '<leader>W')
+map({ 'n', 'x' }, '<leader>rb,', ':DBUIToggle<CR>')
+map({ 'n', 'x' }, '<leader>rf,', ':DBUIFindBuffer<CR>')
+map({ 'n', 'x' }, '<leader>rs,', '<leader>W')
 
-vim.keymap.set({ 'n', 'x' }, "<leader>'", ':mod<CR>')
+map({ 'n', 'x' }, "<leader>'", ':mod<CR>')
 
 
 vim.diagnostic.config({
