@@ -112,6 +112,26 @@ scheme.ansi[5] = '#8be9fc'
 scheme.brights[5] = '#8be9fc'
 -- scheme.visual_bell = '#ff550f'
 
+local copy_mode = nil
+if wezterm.gui then
+    copy_mode = wezterm.gui.default_key_tables().copy_mode
+
+    table.insert(copy_mode, {
+        key = 'e',
+        mods = 'CTRL',
+        action = wezterm.action_callback(function(window, pane)
+            window:perform_action(act.ScrollByLine(1), pane)
+        end),
+    })
+    table.insert(copy_mode, {
+        key = 'y',
+        mods = 'CTRL',
+        action = wezterm.action_callback(function(window, pane)
+            window:perform_action(act.ScrollByLine(-1), pane)
+        end),
+    })
+end
+
 
 return {
     scrollback_lines = 200000,
@@ -181,6 +201,9 @@ return {
         }
     },
     ssh_backend = "Ssh2",
+    key_tables = {
+        copy_mode = copy_mode,
+    },
     -- disable_default_key_bindings = true, -- one day
     -- leader = {
     --     key = 'Tab',

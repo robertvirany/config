@@ -36,6 +36,7 @@ vim.pack.add({
     { src = "https://github.com/benlubas/molten-nvim",                   build = ":UpdateRemotePlugins" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
+    { src = "https://github.com/nvim-mini/mini.indentscope"},
 })
 
 
@@ -150,6 +151,7 @@ require('blink.cmp').setup({
 })
 require("mini.surround").setup()
 require("mini.pairs").setup()
+require("mini.indentscope").setup()
 
 -- require("nvim-treesitter").setup({
 --   highlight = { enable = true },
@@ -245,6 +247,76 @@ local FIELD_NAME = constants.FIELD_NAME
 local FIELD_TYPE = constants.FIELD_TYPE
 local FIELD_META = constants.FIELD_META
 
+local function setup_oil_highlights()
+    vim.api.nvim_set_hl(0, "OilStatSmall", { fg = "#7dd3fc", default = true })
+    vim.api.nvim_set_hl(0, "OilStatMedium", { fg = "#facc15", default = true })
+    vim.api.nvim_set_hl(0, "OilStatLarge", { fg = "#fb7185", bold = true, default = true })
+    vim.api.nvim_set_hl(0, "OilStatDir", { fg = "#a78bfa", default = true })
+    vim.api.nvim_set_hl(0, "OilMtimeRecent", { fg = "#34d399", default = true })
+
+    vim.api.nvim_set_hl(0, "OilExtCode", { fg = "#8be9fd", default = true })
+    vim.api.nvim_set_hl(0, "OilExtData", { fg = "#f1fa8c", default = true })
+    vim.api.nvim_set_hl(0, "OilExtDoc", { fg = "#f8f8f2", default = true })
+    vim.api.nvim_set_hl(0, "OilExtImage", { fg = "#ff79c6", default = true })
+    vim.api.nvim_set_hl(0, "OilExtConfig", { fg = "#50fa7b", default = true })
+    vim.api.nvim_set_hl(0, "OilExtBuild", { fg = "#ffb86c", default = true })
+end
+
+setup_oil_highlights()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = setup_oil_highlights,
+})
+
+local oil_ext_highlights = {
+    lua = "OilExtCode",
+    py = "OilExtCode",
+    js = "OilExtCode",
+    ts = "OilExtCode",
+    jsx = "OilExtCode",
+    tsx = "OilExtCode",
+    rs = "OilExtCode",
+    c = "OilExtCode",
+    h = "OilExtCode",
+    cpp = "OilExtCode",
+    hpp = "OilExtCode",
+    go = "OilExtCode",
+    java = "OilExtCode",
+    sh = "OilExtCode",
+    zsh = "OilExtCode",
+    vim = "OilExtCode",
+    sql = "OilExtCode",
+
+    json = "OilExtData",
+    csv = "OilExtData",
+    tsv = "OilExtData",
+    xml = "OilExtData",
+    parquet = "OilExtData",
+    yaml = "OilExtConfig",
+    yml = "OilExtConfig",
+    toml = "OilExtConfig",
+    ini = "OilExtConfig",
+    conf = "OilExtConfig",
+    env = "OilExtConfig",
+
+    md = "OilExtDoc",
+    txt = "OilExtDoc",
+    org = "OilExtDoc",
+    pdf = "OilExtDoc",
+    tex = "OilExtDoc",
+
+    png = "OilExtImage",
+    jpg = "OilExtImage",
+    jpeg = "OilExtImage",
+    gif = "OilExtImage",
+    webp = "OilExtImage",
+    svg = "OilExtImage",
+
+    makefile = "OilExtBuild",
+    cmake = "OilExtBuild",
+    ninja = "OilExtBuild",
+    lock = "OilExtBuild",
+}
+
 local function oil_entry_is_dir(entry)
     if entry[FIELD_TYPE] == "directory" then
         return true
@@ -252,6 +324,46 @@ local function oil_entry_is_dir(entry)
 
     local meta = entry[FIELD_META]
     return entry[FIELD_TYPE] == "link" and meta and meta.link_stat and meta.link_stat.type == "directory"
+end
+
+local function oil_stat_highlight(value, is_dir)
+    if is_dir then
+        return "OilStatDir"
+    end
+
+    local count = tonumber(value)
+    if not count then
+        return nil
+    elseif count < 1000 then
+        return "OilStatSmall"
+    elseif count < 10000 then
+        return "OilStatMedium"
+    else
+        return "OilStatLarge"
+    end
+end
+
+local function oil_mtime_highlight(value)
+    local month = vim.fn.strftime("%b")
+    return value:match("^" .. month .. "%s+") and value:find(":", 1, true) and "OilMtimeRecent" or nil
+end
+
+local function oil_filename_highlight(entry, is_hidden, is_link_target, is_link_orphan)
+    if is_hidden then
+        return "OilHidden"
+    elseif is_link_orphan then
+        return "OilOrphanLink"
+    elseif is_link_target then
+        return "OilLinkTarget"
+    elseif entry.type == "link" then
+        return "OilLink"
+    elseif entry.type ~= "file" then
+        return nil
+    end
+
+    local name = entry.name or ""
+    local ext = name:match("^Makefile$") and "makefile" or name:match("%.([^.]+)$")
+    return ext and oil_ext_highlights[ext:lower()] or nil
 end
 
 local function schedule_oil_stats_refresh(bufnr)
@@ -335,11 +447,12 @@ local function stat_column(entry, bufnr)
 
     local cached = stats_cache[path]
     if cached then
-        return cached.value or "..."
+        local value = cached.value or "..."
+        return { value, oil_stat_highlight(value, oil_entry_is_dir(entry)) }
     end
 
     request_oil_stat(path, oil_entry_is_dir(entry), bufnr)
-    return "..."
+    return { "...", "OilEmpty" }
 end
 
 require("oil.columns").register("stats", {
@@ -356,11 +469,12 @@ require("oil").setup(
     {
         columns = {
             "icon",
-            "mtime",
+            { "mtime", highlight = oil_mtime_highlight },
             "stats",
         },
         view_options = {
             show_hidden = true,
+            highlight_filename = oil_filename_highlight,
         },
     }
 )
@@ -516,13 +630,27 @@ map('n', '<esc>', ':noh<cr><esc>')
 
 local last_bracket_jump = nil
 local pending_bracket = nil
+local bracket_jump_actions = {}
+
+local function remember_bracket_jump(jump)
+    last_bracket_jump = jump
+end
+
+local function run_bracket_jump(jump)
+    local action = bracket_jump_actions[jump]
+    if action then
+        action()
+    else
+        vim.api.nvim_feedkeys(jump, "m", false)
+    end
+end
 
 vim.on_key(function(key)
     local k = vim.fn.keytrans(key)
 
     if pending_bracket then
-        if k == "]" or k == "[" then
-            last_bracket_jump = pending_bracket .. k
+        if k ~= "<Esc>" then
+            remember_bracket_jump(pending_bracket .. k)
         end
         pending_bracket = nil
         return
@@ -533,6 +661,52 @@ vim.on_key(function(key)
     end
 end, vim.api.nvim_create_namespace("remember-bracket-jump"))
 
+local function wrap_bracket_mapping(jump)
+    local existing = vim.fn.maparg(jump, "n", false, true)
+    if not existing or vim.tbl_isempty(existing) then
+        return false
+    end
+
+    local action
+    if existing.callback then
+        action = existing.callback
+    elseif existing.rhs and existing.rhs ~= "" then
+        action = function()
+            vim.api.nvim_feedkeys(
+                vim.api.nvim_replace_termcodes(existing.rhs, true, false, true),
+                existing.noremap == 1 and "n" or "m",
+                false
+            )
+        end
+    else
+        return false
+    end
+
+    bracket_jump_actions[jump] = action
+    map({ "n", "x", "o" }, jump, function()
+        remember_bracket_jump(jump)
+        action()
+    end, { desc = existing.desc or ("Remember and run " .. jump), nowait = existing.nowait == 1 })
+
+    return true
+end
+
+for _, jump in ipairs({ "]q", "[q", "]Q", "[Q", "]l", "[l", "]L", "[L", "]d", "[d", "]D", "[D" }) do
+    wrap_bracket_mapping(jump)
+end
+
+for _, jump in ipairs({ "]m", "[m", "]M", "[M" }) do
+    bracket_jump_actions[jump] = function()
+        local count = vim.v.count > 0 and tostring(vim.v.count) or ""
+        vim.cmd.normal({ count .. jump, bang = true })
+    end
+
+    map({ "n", "x", "o" }, jump, function()
+        remember_bracket_jump(jump)
+        bracket_jump_actions[jump]()
+    end, { desc = "Remember and run " .. jump, nowait = true })
+end
+
 local function repeat_bracket_jump(dir)
     if not last_bracket_jump then
         return
@@ -541,11 +715,15 @@ local function repeat_bracket_jump(dir)
     local jump
     if last_bracket_jump == "]]" or last_bracket_jump == "[[" then
         jump = dir > 0 and "]]" or "[["
-    else
+    elseif last_bracket_jump == "][" or last_bracket_jump == "[]" then
         jump = dir > 0 and "][" or "[]"
+    else
+        local suffix = last_bracket_jump:sub(2)
+        jump = (dir > 0 and "]" or "[") .. suffix
     end
 
-    vim.api.nvim_feedkeys(jump, "m", false)
+    remember_bracket_jump(jump)
+    run_bracket_jump(jump)
 end
 
 map({"n","x"}, [[\]], function()
