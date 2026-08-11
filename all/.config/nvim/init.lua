@@ -3,6 +3,7 @@ local vim = vim --suppress lsp warnings, nvim v0.12 bug
 
 vim.g.mapleader = " "
 vim.o.timeoutlen = 3000
+vim.o.updatetime = 0
 
 
 -- pack (nvim 0.12)
@@ -36,7 +37,7 @@ vim.pack.add({
     { src = "https://github.com/benlubas/molten-nvim",                   build = ":UpdateRemotePlugins" },
     -- { src = "https://github.com/github/copilot.vim" },
     -- {src = "numToStr/Comment.nvim"},
-    { src = "https://github.com/nvim-mini/mini.indentscope"},
+    { src = "https://github.com/nvim-mini/mini.indentscope" },
 })
 
 
@@ -518,28 +519,28 @@ vim.lsp.enable({ 'kotlin_lsp' })
 vim.lsp.enable({ 'clangd' })
 
 vim.filetype.add({
-  extension = {
-    ll = "llvm",
-    llvm = "llvm",
-    td = "tablegen",
-  },
+    extension = {
+        ll = "llvm",
+        llvm = "llvm",
+        td = "tablegen",
+    },
 })
 
 vim.lsp.config("llvm_ir_lsp", {
-  cmd = { "/Users/robert/projects/llvm-ir-lsp/build/llvm-ir-lsp" },
-  filetypes = { "llvm" },
-  root_markers = { ".git" },
+    cmd = { "/Users/robert/projects/llvm-ir-lsp/build/llvm-ir-lsp" },
+    filetypes = { "llvm" },
+    root_markers = { ".git" },
 })
 
 vim.lsp.enable("llvm_ir_lsp")
 
 vim.lsp.config("tblgen_lsp", {
-  cmd = {
-    "/Users/robert/repos/llvm-project/build-tblgen-lsp/bin/tblgen-lsp-server",
-    "-tablegen-compilation-database=/Users/robert/repos/llvm-project/build/tablegen_compile_commands.yml",
-  },
-  filetypes = { "tablegen" },
-  root_markers = { "tablegen_compile_commands.yml", ".git" },
+    cmd = {
+        "/Users/robert/repos/llvm-project/build-tblgen-lsp/bin/tblgen-lsp-server",
+        "-tablegen-compilation-database=/Users/robert/repos/llvm-project/build/tablegen_compile_commands.yml",
+    },
+    filetypes = { "tablegen" },
+    root_markers = { "tablegen_compile_commands.yml", ".git" },
 })
 
 vim.lsp.enable("tblgen_lsp")
@@ -549,8 +550,33 @@ vim.lsp.enable("tblgen_lsp")
 
 vim.cmd("colorscheme wildcharm")
 
+local function set_lsp_reference_highlights()
+    for _, group in ipairs({
+        "LspReferenceText",
+        "LspReferenceRead",
+        "LspReferenceWrite",
+    }) do
+        vim.api.nvim_set_hl(0, group, { bg = "#28566f" })
+    end
+end
+
+set_lsp_reference_highlights()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = set_lsp_reference_highlights,
+})
+
+local function set_colorcolumn_highlight()
+    vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#34252b" })
+end
+
+set_colorcolumn_highlight()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    callback = set_colorcolumn_highlight,
+})
+
 vim.o.number = true
 vim.o.relativenumber = true
+vim.o.colorcolumn = "81"
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.expandtab = true
@@ -593,6 +619,11 @@ map({ 'n', 'x' }, '<c-w>e', ':wq<CR>')
 map('x', 'y', 'y`>')
 map('n', 'n', 'nzzzv')
 map('n', 'N', 'Nzzzv')
+map('n', 'z<CR>', 'zt', { desc = 'Redraw cursor line at top' })
+map('n', 'zt', 'z<CR>', { desc = 'Redraw cursor line at top, first non-blank' })
+map('n', 'z;', 'zb', { desc = 'Redraw cursor line at bottom' })
+map('n', "z'", 'zz', { desc = 'Redraw cursor line at center' })
+map('n', 'zb', 'z-', { desc = 'Redraw cursor line at bottom, first non-blank' })
 
 map({ 'n', 'x', 'o' }, 'gl', '$')
 map({ 'n', 'x', 'o' }, 'gh', '0')
@@ -620,6 +651,7 @@ map({ 'n', 'x' }, '<leader>e', ':w<CR>')
 map({ 'n', 'x' }, '<leader>q', ':q<CR>')
 map({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
 map({ 'n', 'x' }, '<leader>E', ':x<CR>')
+map({ 'n', 'x' }, '<leader>b', ':bd')
 map({ 'n', 'x' }, '<leader>a', 'ggVG')
 map({ 'n', 'x' }, '<leader><leader>', '<C-^>')
 map({ 'n', 'x' }, '<leader><CR>', ':Oil<CR>')
@@ -726,11 +758,11 @@ local function repeat_bracket_jump(dir)
     run_bracket_jump(jump)
 end
 
-map({"n","x"}, [[\]], function()
+map({ "n", "x" }, [[\]], function()
     repeat_bracket_jump(1)
 end, { desc = "Repeat last bracket jump forward", nowait = true })
 
-map({"n","x"}, [[|]], function()
+map({ "n", "x" }, [[|]], function()
     repeat_bracket_jump(-1)
 end, { desc = "Repeat last bracket jump backward", nowait = true })
 
@@ -761,6 +793,9 @@ vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 vim.g.molten_image_provider = "image.nvim"
 vim.g.molten_auto_open_output = true
 
+local lsp_document_highlight =
+    vim.api.nvim_create_augroup("lsp-document-highlight", { clear = true })
+
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
         local bufnr = args.buf
@@ -768,6 +803,25 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         if client and client.server_capabilities.semanticTokensProvider then
             vim.lsp.semantic_tokens.enable(true, { bufnr = bufnr })
+        end
+
+        if client and client:supports_method(
+                vim.lsp.protocol.Methods.textDocument_documentHighlight,
+                bufnr) then
+            vim.api.nvim_clear_autocmds({
+                group = lsp_document_highlight,
+                buffer = bufnr,
+            })
+            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                group = lsp_document_highlight,
+                buffer = bufnr,
+                callback = vim.lsp.buf.document_highlight,
+            })
+            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+                group = lsp_document_highlight,
+                buffer = bufnr,
+                callback = vim.lsp.buf.clear_references,
+            })
         end
 
         local opts = { buffer = bufnr, silent = true }
