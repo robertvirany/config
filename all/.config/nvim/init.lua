@@ -1,5 +1,7 @@
 local vim = vim --suppress lsp warnings, nvim v0.12 bug
 
+vim.opt.runtimepath:prepend("/Users/robert/repos/llvm-project/llvm/utils/vim")
+
 
 vim.g.mapleader = " "
 vim.o.timeoutlen = 3000
@@ -652,6 +654,8 @@ map({ 'n', 'x' }, '<leader>q', ':q<CR>')
 map({ 'n', 'x' }, '<leader>Q', ':q!<CR>')
 map({ 'n', 'x' }, '<leader>E', ':x<CR>')
 map({ 'n', 'x' }, '<leader>b', ':bd<CR>')
+map({ 'n', 'x' }, '<leader>t', ':tabc<CR>')
+map({ 'n', 'x' }, '<leader>v', ':vsp<CR>')
 map({ 'n', 'x' }, '<leader>a', 'ggVG')
 map({ 'n', 'x' }, '<leader><leader>', '<C-^>')
 map({ 'n', 'x' }, '<leader><CR>', ':Oil<CR>')
